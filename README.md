@@ -7,7 +7,10 @@ under "In cohesive homotopy type theory" on the nLab page
 **Author and AI disclosure.** The Agda code, the prose and the mathematical
 arguments in this repository are by Claude Opus 5.5, an AI model made by
 Anthropic, prompted by Colin Zwanziger in a conversation on 24 and 25 October
-2026.
+2026. The modules for the native sharp modality of Agda 2.9.0
+(`Sharp.lagda`, `CrispInduction.lagda` and `Theorems.lagda`) were added on
+11 November 2026, also by Claude Opus 5.5, prompted by Colin Zwanziger in
+another conversation.
 
 **Acknowledgement.** We thank GPT-6 Astra for reviewing the formalization.
 
@@ -30,9 +33,11 @@ excluded middle in the cohesive mode. Both are false in real cohesion with
 crisp excluded middle.
 
 The proofs are in `TightApartness.lagda`. Some of them assume that Bool is
-♭-discrete, which is a theorem of Shulman's type theory. `FlatSplit.lagda`
-proves it and restates, without the assumption, every result below that
-uses it.
+♭-discrete, which is a theorem of Shulman's type theory.
+`CrispInduction.lagda` proves it from the sharp modality ♯, which Agda 2.9.0
+provides natively, and `Theorems.lagda` restates, without the assumption,
+every result below that uses it. `FlatSplit.lagda` does the same with Agda's
+`--flat-split`, which was the only way in Agda 2.8.
 
 - **Reading.** We formulate both statements for crisp types A, with an
   arbitrary, not necessarily crisp, tight apartness. A relation is *crisp* if
@@ -78,12 +83,20 @@ uses it.
   - `Flat.lagda` defines ♭, ♭-discreteness, crisp excluded middle and the
     axioms of cohesion, and `TightApartness.lagda` proves the results above.
     Like `index.lagda`, they use `--safe --without-K --cohesion`.
-  - `FlatSplit.lagda` proves that Bool is ♭-discrete (Shulman, Theorems 6.19
-    and 6.21 of arXiv version 3) by crisp case analysis, and restates the
-    main theorems without that assumption. Crisp case analysis needs Agda's
-    `--flat-split`, which `--safe` mode doesn't allow together with
-    `--without-K`. So this is the one module that isn't `--safe`: the index
-    doesn't import it, and it is checked separately.
+  - `Sharp.lagda` defines the sharp modality ♯ natively, as a record with a
+    field of modality ♯, which Agda 2.9.0 allows. `CrispInduction.lagda`
+    derives from it that Bool is ♭-discrete (Shulman, Theorems 6.19 and 6.21
+    of arXiv version 3), following Shulman's derivation of crisp induction
+    from ♯, and `Theorems.lagda` restates the main theorems without that
+    assumption. All three use `--safe --without-K --cohesion`, and the index
+    imports them, so checking the index checks every result in `--safe`
+    mode.
+  - `FlatSplit.lagda` proves that Bool is ♭-discrete instead by crisp case
+    analysis, and restates the same theorems. Crisp case analysis needs
+    Agda's `--flat-split`, which `--safe` mode doesn't allow together with
+    `--without-K`. This was the route for Agda 2.8, which has no ♯, and it
+    is kept for comparison. It is the one module that isn't `--safe`: the
+    index doesn't import it, and it is checked separately.
 - `typetopology/cohesive-apartness.patch`: the same folder, as a patch
   against TypeTopology.
 
@@ -96,7 +109,10 @@ changes.
 ## Checking
 
 The workflow in `.github/workflows/check.yml` type-checks the folder with
-Agda 2.8.0. To check by hand, run these commands from the directory that
+Agda 2.9.0, release candidate 3, the latest available on 11 November 2026.
+The final release of 2.9.0 may differ. Agda 2.8.0 checks every module
+except `Sharp.lagda`, `CrispInduction.lagda`, `Theorems.lagda` and the
+index. To check by hand, run these commands from the directory that
 contains your clone of this repository:
 
 ```sh

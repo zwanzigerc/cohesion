@@ -1,11 +1,18 @@
 Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
-Zwanziger, 25 October 2026.
+Zwanziger, 25 October 2026; the modules for the native ♯ of Agda 2.9.0
+added 11 November 2026.
 
 AI disclosure. The Agda code, the prose and the mathematical
 arguments in this folder are by Claude Opus 5.5, an AI model made by
 Anthropic, prompted by Colin Zwanziger in a conversation on 24 and 25
-October 2026. The files were type-checked with Agda 2.8.0 against
-TypeTopology commit 52ed2eb of 24 October 2026. TypeTopology's
+October 2026. The modules Sharp, CrispInduction and Theorems were
+added on 11 November 2026 by Claude Opus 5.5, prompted by Colin
+Zwanziger in another conversation, when the folder moved to Agda
+2.9.0; they follow Shulman's derivation of crisp induction from the
+sharp modality. The files were type-checked with Agda 2.9.0
+(release candidate 3) against TypeTopology commit 52ed2eb of 24
+October 2026. The files other than these three were also checked
+with Agda 2.8.0. TypeTopology's
 AI-Policy.md says that AI generated Agda code or prose will not be
 considered. This folder is therefore offered for discussion only,
 unless the maintainers decide otherwise.
@@ -38,11 +45,27 @@ results.
    results assume that 𝟚 is ♭-discrete, a theorem of Shulman's type
    theory whose proof needs crisp induction.
 
- * gist.CohesiveApartness.FlatSplit proves that 𝟚 is ♭-discrete,
-   using Agda's flag --flat-split, and restates the main theorems
-   without that assumption. Agda doesn't allow --flat-split together
-   with --safe and --without-K, so this module is not --safe. It is
-   therefore not imported here and has to be checked separately.
+ * gist.CohesiveApartness.Sharp defines the sharp modality ♯ natively,
+   as a record with a field of modality ♯, which Agda 2.9.0 allows,
+   with its unit, recursion, crisp induction and elimination on crisp
+   elements.
+
+ * gist.CohesiveApartness.CrispInduction derives from ♯ consequences
+   of crisp induction: that 𝟚, which this folder uses, ℕ and ♭ A are
+   ♭-discrete, and that the constructor of ♭ respects crisp
+   identifications.
+
+ * gist.CohesiveApartness.Theorems restates the main theorems of
+   gist.CohesiveApartness.TightApartness without the assumption that
+   𝟚 is ♭-discrete.
+
+ * gist.CohesiveApartness.FlatSplit proves that 𝟚 is ♭-discrete
+   instead by pattern matching on a crisp element of 𝟚, using Agda's
+   flag --flat-split, and restates the same theorems. It is the route
+   for Agda 2.8, which has no ♯, and is kept for comparison. Agda
+   doesn't allow --flat-split together with --safe and --without-K,
+   so this module is not --safe. It is therefore not imported here
+   and has to be checked separately.
 
 The problems were posed by the nLab contributor Anonymouse, using the
 nLab's definition of axiom C1, so technically they refer to singly
@@ -64,7 +87,10 @@ is a question for the maintainers.
 
 module gist.CohesiveApartness.index where
 
+import gist.CohesiveApartness.CrispInduction
 import gist.CohesiveApartness.Flat
+import gist.CohesiveApartness.Sharp
+import gist.CohesiveApartness.Theorems
 import gist.CohesiveApartness.TightApartness
 
 \end{code}
