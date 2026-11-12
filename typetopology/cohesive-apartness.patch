@@ -450,10 +450,10 @@ index 00000000..94f54f45
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/FlatSplit.lagda b/source/gist/CohesiveApartness/FlatSplit.lagda
 new file mode 100644
-index 00000000..b94425e6
+index 00000000..310a7bbe
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/FlatSplit.lagda
-@@ -0,0 +1,267 @@
+@@ -0,0 +1,269 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 25 October 2026. See the AI disclosure in
 +gist.CohesiveApartness.index.
@@ -465,15 +465,17 @@ index 00000000..b94425e6
 +𝟚 is ♭-discrete. This is a theorem of Shulman's spatial type theory
 +[1, Theorems 6.19 and 6.21], the second of which rests on the crisp
 +induction principles of [1, §5]. Shulman's proofs of these principles
-+use the sharp modality ♯, which Agda's --cohesion doesn't provide. In
-+Agda, crisp induction on 𝟚 is instead case analysis on a crisp
-+variable of type 𝟚, which needs the flag --flat-split, and Agda's
-+--safe mode doesn't allow --flat-split together with --without-K. So
-+gist.CohesiveApartness.TightApartness, which is --safe, takes the fact
-+as a hypothesis, and we prove it here. This is the only module of
-+this folder that uses --flat-split. Because --flat-split is infective
-+and this module isn't --safe, gist.CohesiveApartness.index doesn't
-+import it, and it has to be checked separately.
++use the sharp modality ♯, which Agda's --cohesion did not provide
++before version 2.9.0. In Agda 2.8, crisp induction on 𝟚 is instead
++case analysis on a crisp variable of type 𝟚, which needs the flag
++--flat-split, and Agda's --safe mode doesn't allow --flat-split
++together with --without-K. So gist.CohesiveApartness.TightApartness,
++which is --safe, takes the fact as a hypothesis, and we prove it here
++in this way; gist.CohesiveApartness.CrispInduction proves it instead
++from the native ♯ of Agda 2.9.0, in --safe mode. This is the only
++module of this folder that uses --flat-split. Because --flat-split is
++infective and this module isn't --safe, gist.CohesiveApartness.index
++doesn't import it, and it has to be checked separately.
 +
 +We then restate the main theorems of
 +gist.CohesiveApartness.TightApartness without the hypothesis, in the
@@ -1929,7 +1931,7 @@ index 00000000..5902436f
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/index.lagda b/source/gist/CohesiveApartness/index.lagda
 new file mode 100644
-index 00000000..32f30f37
+index 00000000..761edd0a
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/index.lagda
 @@ -0,0 +1,103 @@
@@ -1943,7 +1945,7 @@ index 00000000..32f30f37
 +mathematics; the solution idea came from GPT-6 Astra, which also
 +reviewed the formalization. The Agda code and the prose in this
 +folder are by Claude Opus 5.5, an AI model made by Anthropic,
-+prompted by Colin Zwanziger in a conversation from 24 to 26 October
++prompted by Colin Zwanziger in a conversation from 24 to 27 October
 +2026. The modules Sharp, CrispInduction and Theorems were added on
 +11 November 2026 by Claude Opus 5.5, prompted by Colin Zwanziger in
 +another conversation, when the folder moved to Agda 2.9.0; they

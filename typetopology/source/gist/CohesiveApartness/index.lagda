@@ -8,7 +8,7 @@ Astra and Claude Opus 5.5, who contributed equally to the
 mathematics; the solution idea came from GPT-6 Astra, which also
 reviewed the formalization. The Agda code and the prose in this
 folder are by Claude Opus 5.5, an AI model made by Anthropic,
-prompted by Colin Zwanziger in a conversation from 24 to 26 October
+prompted by Colin Zwanziger in a conversation from 24 to 27 October
 2026. The modules Sharp, CrispInduction and Theorems were added on
 11 November 2026 by Claude Opus 5.5, prompted by Colin Zwanziger in
 another conversation, when the folder moved to Agda 2.9.0; they

@@ -9,15 +9,17 @@ Several results of gist.CohesiveApartness.TightApartness assume that
 𝟚 is ♭-discrete. This is a theorem of Shulman's spatial type theory
 [1, Theorems 6.19 and 6.21], the second of which rests on the crisp
 induction principles of [1, §5]. Shulman's proofs of these principles
-use the sharp modality ♯, which Agda's --cohesion doesn't provide. In
-Agda, crisp induction on 𝟚 is instead case analysis on a crisp
-variable of type 𝟚, which needs the flag --flat-split, and Agda's
---safe mode doesn't allow --flat-split together with --without-K. So
-gist.CohesiveApartness.TightApartness, which is --safe, takes the fact
-as a hypothesis, and we prove it here. This is the only module of
-this folder that uses --flat-split. Because --flat-split is infective
-and this module isn't --safe, gist.CohesiveApartness.index doesn't
-import it, and it has to be checked separately.
+use the sharp modality ♯, which Agda's --cohesion did not provide
+before version 2.9.0. In Agda 2.8, crisp induction on 𝟚 is instead
+case analysis on a crisp variable of type 𝟚, which needs the flag
+--flat-split, and Agda's --safe mode doesn't allow --flat-split
+together with --without-K. So gist.CohesiveApartness.TightApartness,
+which is --safe, takes the fact as a hypothesis, and we prove it here
+in this way; gist.CohesiveApartness.CrispInduction proves it instead
+from the native ♯ of Agda 2.9.0, in --safe mode. This is the only
+module of this folder that uses --flat-split. Because --flat-split is
+infective and this module isn't --safe, gist.CohesiveApartness.index
+doesn't import it, and it has to be checked separately.
 
 We then restate the main theorems of
 gist.CohesiveApartness.TightApartness without the hypothesis, in the

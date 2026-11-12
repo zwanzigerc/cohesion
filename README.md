@@ -11,7 +11,7 @@ mathematics. The solution idea, to use a construction of Tom de Jong and
 Andrew Swan, came from GPT-6 Astra. Claude Opus 5.5, an AI model made by
 Anthropic, wrote the Agda code, the prose of this repository and the paper
 (from a draft by GPT-6 Astra), prompted by Colin Zwanziger in a
-conversation from 24 to 26 October 2026. GPT-6 Astra also reviewed the
+conversation from 24 to 27 October 2026. GPT-6 Astra also reviewed the
 formalization. The modules for the native sharp modality of Agda 2.9.0
 (`Sharp.lagda`, `CrispInduction.lagda` and `Theorems.lagda`) were added on
 11 November 2026, also by Claude Opus 5.5, prompted by Colin Zwanziger in
