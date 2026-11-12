@@ -22,7 +22,9 @@ import it, and it has to be checked separately.
 We then restate the main theorems of
 gist.CohesiveApartness.TightApartness without the hypothesis, in the
 order in which they appear there. Each keeps the name of the original,
-followed by ′.
+followed by ′ (the prime U+2032), and has the same parameters and
+universe restrictions; see the paragraph on scope in
+gist.CohesiveApartness.TightApartness.
 
  * Over crisp excluded middle, the first statement implies double
    negation elimination, and so is equivalent to excluded middle.
@@ -47,7 +49,7 @@ as its equivalence with excluded middle, don't use the hypothesis.
 
 [1] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
     homotopy type theory. Mathematical Structures in Computer
-    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584
+    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
     Numbering as in version 3 of the arXiv preprint.
 
 \begin{code}

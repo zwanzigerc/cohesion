@@ -7,16 +7,18 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       LC_ALL: C.UTF-8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install Agda 2.9.0 (release candidate 3)
         run: |
-          curl -sSL -o agda.tar.xz \
+          curl -fsSL -o agda.tar.xz \
             https://github.com/agda/agda/releases/download/v2.9.0-rc3/Agda-v2.9.0-rc3-linux.tar.xz
+          echo "bde55ce6855fec13404e6837655b7a98d5174ae82e31525e17fc641dac742cc2  agda.tar.xz" \
+            | sha256sum -c -
           mkdir -p "$HOME/agda-bin"
           tar -xf agda.tar.xz -C "$HOME/agda-bin"
           dirname "$(find "$HOME/agda-bin" -name agda -type f | head -n 1)" >> "$GITHUB_PATH"

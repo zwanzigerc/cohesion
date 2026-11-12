@@ -1,0 +1,525 @@
+\documentclass[11pt]{amsart}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[expansion=false]{microtype}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\urlstyle{tt}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+\setlist{itemsep=1pt,topsep=3pt}
+\renewcommand{\labelitemi}{$\bullet$}
+% Take the section sign from the Computer Modern symbol font.
+\DeclareTextSymbolDefault{\textsection}{OMS}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\U}{\mathcal U}
+\newcommand{\V}{\mathcal V}
+\newcommand{\W}{\mathcal W}
+\newcommand{\Uz}{\mathcal U_0}
+\newcommand{\B}{\mathbf 2}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Om}{\Omega}
+\newcommand{\crisp}{\mathrel{::}}
+\newcommand{\cu}{\varepsilon}
+\newcommand{\fl}[1]{{#1}^{\flat}}
+\newcommand{\trunc}[1]{\lVert #1\rVert}
+\newcommand{\EM}{\mathsf{EM}}
+\newcommand{\DNE}{\mathsf{DNE}}
+\newcommand{\CEM}{\mathsf{CEM}}
+\newcommand{\PE}{\mathsf{PE}}
+\newcommand{\const}{\mathsf{const}}
+\newcommand{\CrispRep}{\mathsf{CrispRep}}
+\newcommand{\Conn}{\mathsf{Conn}}
+\newcommand{\Pone}{\mathsf P_1}
+\newcommand{\Ptwo}{\mathsf P_2}
+\newcommand{\ap}{\mathrel{\#}}
+\newcommand{\apP}[1]{\mathrel{\#_{#1}}}
+\newcommand{\ag}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title[Tight apartness and excluded middle in cohesive type theory]{Tight
+apartness and excluded middle\\ in cohesive type theory}
+
+\author{Claude Opus 5.5}
+\author{GPT-6 Astra}
+\thanks{Both authors are AI models and contributed equally to the
+mathematics. The solution idea, to use the construction of de~Jong and
+Swan, came from GPT-6 Astra; Claude Opus 5.5 derived the results from
+it, formalized them, and wrote this paper from a draft by GPT-6 Astra.
+We thank Colin Zwanziger, who prompted the work and maintains the
+repository \url{https://github.com/zwanzigerc/cohesive-apartness}, for
+posing the questions and coordinating our work.}
+
+\date{26 October 2026}
+
+\begin{abstract}
+Two questions on the nLab ask, assuming crisp excluded middle and
+Shulman's Axiom~C1 of cohesive type theory, whether every tight apartness
+relation on a discrete type is crisp, and whether the relation that a
+tight apartness relation on a type $A$ induces on $\flat A$ is decidable.
+Reading them as principles about crisp carriers and arbitrary tight
+apartness relations, we show that the second is equivalent to excluded
+middle, and so is the first in the presence of crisp excluded middle.
+Under Axiom~C1 and propositional extensionality, both are then
+equivalent to every generator being $0$-connected, and a generator with
+two distinct points, as in Axiom~C2 and real cohesion, refutes them.
+Since excluded middle holds with trivial cohesion, crisp excluded middle
+and Axiom~C1 do not refute the principles; granting Shulman's intended
+topos models, they do not prove them either. The key is a
+tight apartness relation of de~Jong and Swan. The results are formalized
+in Agda.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Shulman's spatial and real-cohesive type theory~\cite{Shulman2018}, which
+internalizes Lawvere's axiomatic cohesion~\cite{Lawvere2007}, extends
+homotopy type theory by \emph{crisp} variables, which range over a
+discrete base, and a modality $\flat$ whose coalgebras are the
+\emph{discrete} types. His Axioms C0, C1 and C2 ask that discreteness be
+detected by a family of generators, and Axiom R$\flat$ that the real line
+suffice. Since topological models refute excluded middle, Shulman assumes
+it only for crisp propositions~\cite[\S2.1]{Shulman2018}. An
+\emph{apartness relation} is a proposition-valued relation $x\ap y$ that
+is irreflexive, symmetric and cotransitive, that is, $x\ap y$ implies
+$(x\ap z)\vee(y\ap z)$; it is \emph{tight} if $\neg(x\ap y)$ implies
+$x=y$~\cite{TroelstravanDalen1988}. Classically every tight apartness
+relation is $\neq$, but constructively a type may carry several.
+
+The nLab page \emph{open problems in homotopy type
+theory}~\cite{nLabOpenProblems} listed two questions about these notions,
+posed by the nLab contributor Anonymouse. On 24 October 2026 they read as
+follows.
+\begin{enumerate}[label=(\arabic*)]
+\item Suppose a discrete cohesive type $A$ comes with a tight apartness
+relation. Then, assuming crisp excluded middle and axiom C1, is the tight
+apartness relation on $A$ a crisp relation?
+\item Suppose a cohesive type $A$ comes with a tight apartness relation.
+Then, assuming crisp excluded middle and axiom C1, is the tight apartness
+relation on $\flat A$ in the cohesive mode decidable?
+\end{enumerate}
+We take Shulman's formulation of Axiom~C1~\cite[\S8.2]{Shulman2018} as
+authoritative; \Cref{rem:nlab} discusses the formulation on the nLab.
+
+For a crisp apartness relation both questions are trivial
+(\Cref{rem:reading}), so we read them as principles $\Pone$ and $\Ptwo$
+about crisp carriers and arbitrary tight apartness relations
+(\Cref{def:principles}). We show that $\Ptwo$ is equivalent to excluded
+middle $\EM$, and so is $\Pone$ under crisp excluded middle $\CEM$
+(\Cref{thm:em}). Under Axiom C1, $\CEM$ and propositional
+extensionality, both are equivalent to every generator being
+$0$-connected (\Cref{thm:generators}). A type with two distinct points
+and only constant maps to the Booleans refutes $\Ptwo$, and $\Pone$ under
+$\CEM$ (\Cref{thm:refutation}); in particular Axiom C2 and real cohesion
+do (\Cref{cor:C2}). Since the degenerate interpretation with trivial
+cohesion validates $\EM$, the axioms $\CEM$ and C1 do not refute the
+principles, and, granting Shulman's intended topos models of real
+cohesion, they do not prove them (\Cref{rem:independence}). In this
+sense both questions have a negative answer.
+
+Everything rests on a construction from work of de~Jong and
+Swan~\cite{deJong2025,TypeTopology}. For a proposition $P$, the relation
+$x\apP{P}y\coloneqq P\wedge(x\neq y)$ is an apartness relation on any type
+with decidable equality, tight when $\neg\neg P$, and on the Booleans
+$0\apP{P}1$ holds exactly when $P$ does. A principle that makes tight
+apartness relations on the Booleans crisp, or decidable at crisp points,
+therefore transfers crisp information to an arbitrary $\neg\neg$-dense
+proposition, which gives double negation elimination. De~Jong, following
+a generalization of an idea of Swan, used this relation to show that a
+type with decidable equality and two distinct points has at most one
+tight apartness relation only if double negation elimination
+holds~\cite{TypeTopology} (see \Cref{rem:uniqueness}); that work does
+not concern cohesion. Applying
+the construction to the present questions was the idea of GPT-6 Astra.
+
+The lemmas, theorems and corollaries of Sections~\ref{sec:prelim}
+to~\ref{sec:refutations}, apart from the clauses about Axiom R$\flat$ and
+the unit generator, are formalized in Agda, on top of the TypeTopology
+library~\cite{TypeTopology}, in the repository~\cite{Formalization},
+whose README lists the correspondence.
+
+\section{Preliminaries and the two principles}\label{sec:prelim}
+
+We work in Shulman's spatial type theory~\cite[\S\S2--6]{Shulman2018},
+with function extensionality, assumed crisply, and propositional
+truncations $\trunc{-}$; univalence is not needed. Shulman also assumes
+propositional resizing and propositional extensionality
+throughout~\cite[\S1]{Shulman2018}; we avoid the former and state each
+use of the latter. Crisp variables are written $u\crisp A$, and closed
+terms are crisp. For a crisp type $A$, the type $\flat A$ has elements
+$\fl u$ for crisp $u\crisp A$, and \emph{$\flat$-induction} says that to
+inhabit a family $C$ over $\flat A$, which need not be crisp, at
+$M:\flat A$, it suffices to inhabit $C(\fl u)$ for a crisp variable
+$u\crisp A$~\cite[\S4.2]{Shulman2018}. The counit $\cu_A:\flat A\to A$
+sends $\fl u$ to $u$. A crisp type $A$ is \emph{discrete} if $\cu_A$ is
+an equivalence~\cite[Definition~6.12]{Shulman2018}, and \emph{crisply}
+discrete if this has a crisp proof. The Booleans $\B=\one+\one$ are
+crisply discrete~\cite[Theorems~6.19 and~6.21]{Shulman2018}, a fact that
+rests on crisp case analysis~\cite[Theorem~5.4]{Shulman2018}.
+
+All universes are crisp, and $\Uz$ is the smallest. For a universe
+$\V$, write $\Om_\V$ for the type of propositions in $\V$, and $\EM_\V$
+and $\DNE_\V$ for excluded middle and double negation elimination for
+them, which are equivalent. $\CEM_\V$ says
+that every crisp proposition $P\crisp\Om_\V$ is decidable, which is
+Shulman's Axiom LEM~\cite[\S2.1]{Shulman2018}, and $\PE_\V$ is
+propositional extensionality. A statement that quantifies over a crisp
+variable, such as $\CEM_\V$, becomes a type by quantifying over an
+element of $\flat\Om_\V$, or of $\flat\U$, and using
+$\flat$-induction~\cite[Remarks~6.28 and~8.1]{Shulman2018}: for instance,
+$\CEM_\V$ becomes $\prod_{B:\flat\Om_\V}(\cu(B)+\neg\cu(B))$. We use this
+form whenever such a statement is a hypothesis or is negated. A type has
+\emph{decidable equality} if $(x=y)\vee(x\neq y)$ for all $x$ and~$y$.
+
+\subsection*{Axioms of cohesion}
+A type $A$ is \emph{$B$-null} if $\const:A\to(B\to A)$ is an
+equivalence. Axiom C0~\cite[\S8.1]{Shulman2018} asks for a crisp family
+$R\crisp J\to\mathsf{Type}$ such that a crisp type is discrete if and
+only if it is $R_j$-null for all $j:J$. Axiom
+C1~\cite[\S8.2]{Shulman2018} adds points $p:\prod_{j:J}R_j$, and Axiom
+C2~\cite[\S9]{Shulman2018} adds a $j_0:J$ such that $R_{j_0}$ is a set
+with elements $r_0\neq r_1$. Axiom R$\flat$~\cite[\S8]{Shulman2018} is
+Axiom C0 for the single generator $\R$, the Dedekind reals, and it implies
+C2, since $0\neq1$ in $\R$~\cite[\S9]{Shulman2018}. Our arguments never
+use that $J$, $R$ or $p$ is crisp. We therefore call any family
+$R:J\to\W$ with points $p_j:R_j$ that satisfies the condition of C0 a
+family of \emph{pointed generators}, and we take that condition to apply
+to crisp types in all universes.
+
+\begin{lemma}[{cf.~\cite[Lemma~8.7]{Shulman2018}}]\label{lem:null}
+Let $b:B$. A type $A$ is $B$-null if and only if $f(x)=f(b)$ for all
+$f:B\to A$ and $x:B$.
+\end{lemma}
+
+\begin{proof}
+Evaluation at $b$ is a retraction of $\const$, and by function
+extensionality the condition says exactly that it is also a section.
+\end{proof}
+
+\begin{remark}[The formulation on the nLab]\label{rem:nlab}
+The page~\cite{nLabPunctual} to which ``axiom C1'' in the questions
+links uses one pointed type $I$ and two modes: a crisp type $T$ is
+discrete if and only if every function $I\to\mathrm{Disc}(T)$ is
+constant. Read literally, this applies discreteness, a property of
+cohesive-mode types, to the crisp-mode type $T$, while $\mathrm{Disc}(T)$
+is always discrete; the page also writes the canonical map as $A\to\flat A$
+instead of $\flat A\to A$. The evident meaning is Shulman's Axiom C1
+with one generator, which is how we read the questions; ``in the
+cohesive mode'' then adds nothing.
+\end{remark}
+
+\begin{lemma}[{de~Jong and Escard\'o~\cite{TypeTopology}}]\label{lem:classical}
+Under $\DNE_\V$, every $\V$-valued tight apartness relation on a type
+satisfies $x\ap y\leftrightarrow x\neq y$.
+\end{lemma}
+
+\begin{proof}
+By irreflexivity, and since tightness turns $x\neq y$ into
+$\neg\neg(x\ap y)$.
+\end{proof}
+
+\begin{lemma}[{de~Jong and Swan~\cite{deJong2025,TypeTopology}}]\label{lem:dejong}
+Let $X$ have decidable equality and let $P$ be a proposition with
+$\neg\neg P$. Then $x\apP{P}y\coloneqq P\times(x\neq y)$ is a tight
+apartness relation on $X$, and on $\B$ we have
+$0\apP{P}1\leftrightarrow P$.
+\end{lemma}
+
+\begin{proof}
+For cotransitivity, given $p:P$, $x\neq y$ and $z$, decide whether
+$x=z$: if so, $y\apP{P}z$, and otherwise $x\apP{P}z$. For tightness,
+assume $\neg(x\apP{P}y)$; then $x\neq y$ would give
+$\neg P$, so $\neg\neg(x=y)$, and hence $x=y$ by decidable equality. The
+other properties are immediate.
+\end{proof}
+
+\begin{definition}\label{def:principles}
+Let $X\crisp\U$ be crisp. A relation $R:X\to X\to\V$, not necessarily
+crisp, is \emph{crisply representable} if
+\[
+ \CrispRep(R)\coloneqq
+ \Bigl\lVert \sum_{r:\flat(X\to X\to\Om_{\U\sqcup\V})}\
+ \prod_{x,y:X}\bigl(\cu(r)(x,y)\leftrightarrow R(x,y)\bigr)\Bigr\rVert .
+\]
+For crisp universes $\U$ and $\V$, the principles are:
+\begin{description}[font=\normalfont,leftmargin=1.5em,labelindent=0pt]
+\item[$\Pone(\U,\V)$] for every crisp $X\crisp\U$ with a crisp proof
+that $X$ is discrete, every $\V$-valued tight apartness relation on $X$
+is crisply representable;
+\item[$\Ptwo(\U,\V)$] for every crisp $X\crisp\U$, every $\V$-valued
+tight apartness relation $\ap$ on $X$, and all $u,v:\flat X$, the
+proposition $\cu(u)\ap\cu(v)$ is decidable.
+\end{description}
+The apartness relation is an ordinary variable, not assumed crisp.
+\end{definition}
+
+\begin{remark}[On the reading]\label{rem:reading}
+(a) For a crisp apartness relation, with a crisp proof that its values are
+propositions, both questions are trivial: the relation represents itself,
+after lifting its values to $\U\sqcup\V$; and for $u,v:\flat X$ we may
+assume by $\flat$-induction that $u=\fl s$ and $v=\fl t$ with $s,t\crisp
+X$, so that $\cu(u)\ap\cu(v)$ is the crisp proposition $s\ap t$, which
+$\CEM$ decides.
+(b) Under propositional extensionality, which Shulman assumes,
+$\CrispRep(R)$ says that $R$, with values lifted to $\U\sqcup\V$, lies
+merely in the image of the counit
+$\flat(X\to X\to\Om_{\U\sqcup\V})\to(X\to X\to\Om_{\U\sqcup\V})$, that
+is, that $R$ comes from a crisp relation. Pointwise equivalence
+expresses this without propositional extensionality.
+(c) Under Axiom C1, a crisp proof of discreteness is no
+restriction~\cite[Lemma~8.10]{Shulman2018}.
+(d) We read the relation on $\flat A$ as the restriction along $\cu_A$.
+It is again a tight apartness relation when $\cu_A$ is injective, as for
+crisp sets under Axiom C1~\cite[Theorem~8.21]{Shulman2018}.
+(e) Excluded middle implies both principles for all universes; we prove
+the converses for carriers in $\Uz$, which contains~$\B$.
+\end{remark}
+
+\section{Both principles are excluded middle}\label{sec:em}
+
+\begin{theorem}\label{thm:em}
+Let $\V$ be a crisp universe.
+\begin{enumerate}[label=(\roman*)]
+\item $\EM_\V$ implies $\Ptwo(\U,\V)$ for every $\U$, and $\Ptwo(\Uz,\V)$
+implies $\EM_\V$.
+\item $\EM_\V$ implies $\Pone(\U,\V)$ for every $\U$. If $\CEM_\V$ holds
+and $\B$ is crisply discrete, then $\Pone(\Uz,\V)$ implies $\EM_\V$.
+\end{enumerate}
+Neither part uses propositional extensionality or an axiom of cohesion.
+\end{theorem}
+
+\begin{proof}
+Assume $\EM_\V$. It decides the values of every apartness relation, which
+gives $\Ptwo(\U,\V)$. For $\Pone(\U,\V)$, let $\ap$ be a $\V$-valued tight
+apartness relation on a crisp $X\crisp\U$. By \Cref{lem:classical},
+$x\ap y\leftrightarrow x\neq y$. The relation
+$(x,y)\mapsto\bigl((x=y)\to\mathbf 0_\V\bigr)$, together with the proof
+that its values are propositions, involves only the crisp variable $X$
+and the crisp function extensionality, so it gives an element $r$ of
+$\flat(X\to X\to\Om_{\U\sqcup\V})$ with $\cu(r)(x,y)\leftrightarrow
+x\neq y\leftrightarrow x\ap y$.
+
+For the converses we prove $\DNE_\V$. Let $P:\Om_\V$ with $\neg\neg P$. By
+\Cref{lem:dejong}, $\apP{P}$ is a $\V$-valued tight apartness relation on
+the crisp type $\B:\Uz$. Under $\Ptwo(\Uz,\V)$, the proposition
+$\cu(\fl 0)\apP{P}\cu(\fl 1)$, which is $0\apP{P}1$, is decidable; a
+positive answer gives $P$, and a negative one gives $\neg P$, which is
+impossible. Under $\Pone(\Uz,\V)$, with $\CEM_\V$ and a crisp proof that
+$\B$ is discrete, we get $\CrispRep(\apP{P})$. As the goal $P$ is a
+proposition, we may assume $r:\flat(\B\to\B\to\Om_\V)$ with equivalences
+$\cu(r)(x,y)\leftrightarrow x\apP{P}y$, which need not be crisp. By
+$\flat$-induction, $r=\fl s$ with $s$ crisp, so $s(0,1)$ is a crisp
+proposition, which $\CEM_\V$ decides. If it holds, then $0\apP{P}1$, and
+so $P$; otherwise $\neg(0\apP{P}1)$, which gives $\neg P$, which is
+impossible.
+\end{proof}
+
+\begin{corollary}\label{cor:em}
+Under $\CEM_\V$, the statements $\Pone(\Uz,\V)$, $\Ptwo(\Uz,\V)$ and
+$\EM_\V$ are equivalent.
+\end{corollary}
+
+\begin{remark}[Relation to de~Jong's theorem]\label{rem:uniqueness}
+Under $\CEM_\V$, a crisply representable tight apartness relation on $\B$
+is pointwise equivalent to $\neq$: at $(0,1)$ and $(1,0)$, $\CEM_\V$
+decides the crisp representative, and the negative case would give $0=1$
+by tightness. So, with propositional extensionality, $\Pone(\Uz,\V)$
+makes $\neq$ the only $\V$-valued tight apartness relation on $\B$, and
+for $\V=\Uz$ de~Jong's uniqueness theorem~\cite{TypeTopology} also gives
+$\DNE_{\Uz}$. What is new is this passage from crispness to uniqueness;
+the proof of \Cref{thm:em} avoids propositional extensionality.
+\end{remark}
+
+\section{Axiom C1 and the generators}\label{sec:generators}
+
+In this section $R:J\to\W$ is a family of pointed generators and $\B$ is
+crisply discrete, as under Axiom C1. The generators are
+\emph{$0$-connected} if $\Conn(R,p)\coloneqq\prod_{j:J}\prod_{x:R_j}
+\trunc{x=p_j}$; this is a condition on identity types, not on the shape
+modality.
+
+\begin{lemma}\label{lem:omega}
+If the counit $\flat\Om_\V\to\Om_\V$ has a section, for instance if
+$\Om_\V$ is discrete, then $\CEM_\V$ implies $\EM_\V$.
+\end{lemma}
+
+\begin{proof}
+For $P:\Om_\V$, the section gives $Q:\flat\Om_\V$ with $\cu(Q)=P$. By
+$\flat$-induction $Q=\fl S$ with $S\crisp\Om_\V$, so $\CEM_\V$ decides
+$S$, which is $\cu(Q)$, and hence~$P$.
+\end{proof}
+
+\begin{theorem}\label{thm:generators}
+\leavevmode
+\begin{enumerate}[label=(\roman*)]
+\item $\EM_\W$ implies $\Conn(R,p)$.
+\item Under $\PE_\W$ and $\CEM_\W$, $\Conn(R,p)$ implies $\EM_\W$.
+\end{enumerate}
+Hence, under $\PE_\W$ and $\CEM_\W$, the statements $\Pone(\Uz,\W)$,
+$\Ptwo(\Uz,\W)$, $\EM_\W$ and $\Conn(R,p)$ are equivalent.
+\end{theorem}
+
+\begin{proof}
+(i) Since $\B$ is discrete, it is $R_j$-null, so every $f:R_j\to\B$
+satisfies $f(x)=f(p_j)$ by \Cref{lem:null}. Apply this to the map
+$\chi:R_j\to\B$ that $\EM_\W$ provides, with $\chi(y)=1$ if
+$\trunc{y=p_j}$ and $\chi(y)=0$ otherwise: as $\chi(p_j)=1$, we get
+$\trunc{x=p_j}$ for every $x:R_j$.
+(ii) By $\PE_\W$, the type $\Om_\W$ is a set. So for $f:R_j\to\Om_\W$
+and $x:R_j$ the goal $f(x)=f(p_j)$ is a proposition, and we may obtain it
+from $\trunc{x=p_j}$. By \Cref{lem:null}, $\Om_\W$ is $R_j$-null for
+every $j$, hence discrete by the condition of C0, applied to the crisp
+type $\Om_\W$ in the next universe; no resizing is involved.
+\Cref{lem:omega} gives $\EM_\W$. The last statement follows with
+\Cref{cor:em}.
+\end{proof}
+
+\begin{corollary}\label{cor:single}
+Let $(I,p)$ be the only generator, with $I:\W$ a set, and assume
+$\CEM_\W$. Then $\Pone(\Uz,\W)$, $\Ptwo(\Uz,\W)$, $\EM_\W$ and
+$\prod_{x:I}(x=p)$ are equivalent, without propositional extensionality.
+In particular, if the only generator is the unit type, $\CEM_\W$ implies
+$\EM_\W$.
+\end{corollary}
+
+\begin{proof}
+By (i), $\EM_\W$ gives $\trunc{x=p}$, which is $x=p$ as $I$ is a set.
+Conversely, if $x=p$ for all $x$, then $f(x)=f(p)$ for every
+$f:I\to\Om_\W$ without $\Om_\W$ being a set, and we conclude as in
+(ii).
+\end{proof}
+
+\section{Refutations and independence}\label{sec:refutations}
+
+\begin{theorem}\label{thm:refutation}
+Let $I:\W$ have elements $q_0\neq q_1$ such that $f(x)=f(y)$ for every
+$f:I\to\B$ and $x,y:I$. Then $\neg\EM_\W$ and $\neg\Ptwo(\Uz,\W)$, and,
+if $\CEM_\W$ holds and $\B$ is crisply discrete, also
+$\neg\Pone(\Uz,\W)$. This needs no axiom of cohesion, no assumption that
+$I$ is a set, and no propositional extensionality.
+\end{theorem}
+
+\begin{proof}
+Under $\EM_\W$, let $\chi:I\to\B$ be $1$ exactly where $\trunc{x=q_0}$
+holds. Then $\chi(q_1)=\chi(q_0)=1$, so $\trunc{q_1=q_0}$, contradicting
+$q_0\neq q_1$. Now apply \Cref{thm:em}.
+\end{proof}
+
+\begin{corollary}\label{cor:C2}
+If some pointed generator $R_{j_0}:\W$ has elements $r_0\neq r_1$, as in
+Axiom C2, and $\B$ is crisply discrete, then $\neg\EM_\W$ and
+$\neg\Ptwo(\Uz,\W)$, and under $\CEM_\W$ also $\neg\Pone(\Uz,\W)$. In
+particular, Axiom R$\flat$ refutes $\Ptwo(\Uz,\W)$, and together with
+Axiom LEM also $\Pone(\Uz,\W)$, for every universe $\W$ containing~$\R$.
+\end{corollary}
+
+\begin{proof}
+Every $f:R_{j_0}\to\B$ satisfies $f(x)=f(p_{j_0})=f(y)$, as in the proof
+of \Cref{thm:generators}, so \Cref{thm:refutation} applies. Axiom
+R$\flat$ implies C2 with the generator $\R$~\cite[\S9]{Shulman2018}.
+\end{proof}
+
+\begin{remark}[An explicit family]\label{rem:family}
+Excluded middle is known to fail in real
+cohesion~\cite[\S8.3]{Shulman2018}. Assume Axiom R$\flat$, and for $x:\R$
+let $Q(x)$ be $(x>0)\vee\neg(x>0)$, a proposition in $\Uz$ for cuts
+valued in $\Om_{\Uz}$. As $\neg\neg Q(x)$, \Cref{lem:dejong} gives a family
+$x\mapsto{\apP{Q(x)}}$ of $\Uz$-valued tight apartness relations on $\B$.
+If all of them were decidable at crisp points, or crisply representable
+under Axiom LEM, the proof of \Cref{thm:em} would give $Q(x)$ for all
+$x:\R$, making $x>0$ a detachable subset of $\R$. By
+\cite[Theorem~11.1]{Shulman2018} it would then be empty or all of $\R$,
+which is absurd. So $\Pone(\Uz,\Uz)$ and $\Ptwo(\Uz,\Uz)$ fail too, as
+witnessed by apartness relations depending on a real parameter.
+\end{remark}
+
+\begin{remark}[Independence]\label{rem:independence}
+In the interpretation where $\flat$ is the identity and every type is
+discrete, which spatial type theory allows~\cite[\S7]{Shulman2018},
+Axiom C1 holds with the unit type as generator, and over a classical
+metatheory $\EM$ holds, so both principles do. Hence $\CEM$ and C1 do
+not refute them. Conversely, Shulman explains that Axiom LEM holds in a
+local topos over a base satisfying excluded middle, that Axiom C2
+expresses punctual local connectedness and contractible codiscreteness,
+and that Axiom R$\flat$ describes his motivating model, sheaves on the
+Cartesian spaces $\R^n$~\cite[\S\S7 and~10]{Shulman2018}. In such models
+both principles fail by \Cref{cor:C2}, so $\CEM$ and C1 do not prove
+them. Shulman calls this semantics
+conjectural~\cite[Remark~7.5]{Shulman2018}; we do not formalize these
+remarks.
+\end{remark}
+
+\begin{thebibliography}{9}
+\setlength{\itemsep}{0pt}
+
+\bibitem{deJong2025}
+T.~de~Jong.
+\newblock A little thread on constructive mathematics and (tight)
+  apartness relations in particular.
+\newblock Mathstodon, February 2025.
+\newblock \url{https://mathstodon.xyz/@de_Jong_Tom/113930642479158387}.
+
+\bibitem{Formalization}
+\emph{Tight apartness relations in cohesive type theory}.
+\newblock Agda formalization of the results of this paper, 2026.
+\newblock \url{https://github.com/zwanzigerc/cohesive-apartness}.
+
+\bibitem{Lawvere2007}
+F.~W. Lawvere.
+\newblock Axiomatic cohesion.
+\newblock \emph{Theory and Applications of Categories}, 19(3):41--49,
+  2007.
+
+\bibitem{nLabOpenProblems}
+nLab authors.
+\newblock Open problems in homotopy type theory.
+\newblock
+  \url{https://ncatlab.org/nlab/show/open+problems+in+homotopy+type+theory}.
+\newblock Consulted 24 and 26 October 2026.
+
+\bibitem{nLabPunctual}
+nLab authors.
+\newblock Axiom of punctual cohesion.
+\newblock
+  \url{https://ncatlab.org/nlab/show/axiom+of+punctual+cohesion}.
+\newblock Revision of 14 May 2025.
+
+\bibitem{Shulman2018}
+M.~Shulman.
+\newblock Brouwer's fixed-point theorem in real-cohesive homotopy type
+  theory.
+\newblock \emph{Mathematical Structures in Computer Science},
+  28(6):856--941, 2018.
+\newblock Numbering as in
+  \href{https://arxiv.org/abs/1509.07584v3}{arXiv:1509.07584v3}.
+
+\bibitem{TroelstravanDalen1988}
+A.~S. Troelstra and D.~van Dalen.
+\newblock \emph{Constructivism in Mathematics: An Introduction}, volumes~I
+  and~II.
+\newblock North-Holland, 1988.
+
+\bibitem{TypeTopology}
+M.~H. Escard\'o and contributors.
+\newblock TypeTopology, \url{https://github.com/martinescardo/TypeTopology},
+  commit \ag{52ed2eb}.
+\newblock Module \ag{Apartness.Properties}, by T.~de~Jong and
+  M.~H. Escard\'o.
+
+\end{thebibliography}
+
+\end{document}

@@ -37,7 +37,7 @@ purposes.
 
 [2] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
     homotopy type theory. Mathematical Structures in Computer
-    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584
+    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
     Numbering as in version 3 of the arXiv preprint.
 
 \begin{code}

@@ -17,7 +17,9 @@ native ♯ of Agda 2.9.0, as Shulman derives crisp induction from ♯
 imports it.
 
 The statements are those of gist.CohesiveApartness.FlatSplit, with the
-same names (the name of the original followed by ′), in the order in
+same names (the name of the original followed by ′, the prime U+2032)
+and the same parameters and universe restrictions (see the paragraph
+on scope in gist.CohesiveApartness.TightApartness), in the order in
 which they appear in gist.CohesiveApartness.TightApartness:
 
  * Over crisp excluded middle, the first statement implies double
@@ -40,7 +42,7 @@ which they appear in gist.CohesiveApartness.TightApartness:
 
 [1] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
     homotopy type theory. Mathematical Structures in Computer
-    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584
+    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
     Numbering as in version 3 of the arXiv preprint.
 
 \begin{code}

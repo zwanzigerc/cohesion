@@ -1,10 +1,10 @@
 Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
-Zwanziger, 25 October 2026. See the AI disclosure in
-gist.CohesiveApartness.index.
+Zwanziger, 25 October 2026; three proofs made instances of one lemma,
+11 November 2026. See the AI disclosure in gist.CohesiveApartness.index.
 
-We discuss the two open problems listed in the section "In cohesive
-homotopy type theory" of the nLab page [1], which read as follows
-(24 October 2026):
+We discuss two problems that were listed as open in the section "In
+cohesive homotopy type theory" of the nLab page [1]. On 24 October
+2026 they read as follows:
 
  (1) Suppose a discrete cohesive type A comes with a tight apartness
      relation. Then, assuming crisp excluded middle and axiom C1, is
@@ -65,11 +65,11 @@ defined below. Here is what we show.
      taken as a hypothesis here; see below); the second needs no
      assumption. This uses the tight apartness on 𝟚 with ₀ apart from
      ₁ precisely when a given ¬¬-dense proposition holds. The
-     construction is due to Andrew Swan: following his idea, Tom de
-     Jong showed that if ℕ has at most one tight apartness then double
-     negation elimination holds, and that the argument works for any
-     discrete type with two distinct points [4]. It is formalized in
-     Apartness.Properties.
+     construction is due to Tom de Jong, following a generalization of
+     an idea of Andrew Swan [4]. De Jong used it to show that if a
+     discrete type with two distinct points, such as ℕ, has at most one
+     tight apartness, then double negation elimination holds. This is
+     formalized in Apartness.Properties.
 
      A second proof of the first half of (b), for 𝓥 = 𝓤₀ and assuming
      propositional extensionality, applies directly the theorem of
@@ -127,7 +127,7 @@ hypothesis.
 
 [2] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
     homotopy type theory. Mathematical Structures in Computer
-    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584
+    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
     Numbering as in version 3 of the arXiv preprint.
 
 [3] nLab. Axiom of punctual cohesion (axiom C1).
@@ -137,7 +137,17 @@ hypothesis.
     (tight) apartness relations in particular. Mathstodon, February
     2025. https://mathstodon.xyz/@de_Jong_Tom/113930642479158387
 
-Function extensionality is assumed crisply, as it is a global axiom.
+Scope. All results of this module are parameterized by function
+extensionality, assumed crisply as it is a global axiom, and by
+propositional truncations. The implications (a) hold for carriers and
+apartness values in arbitrary universes 𝓤 and 𝓥. The converse
+implications, the equivalences and the refutations of (b)–(e) are
+formalized for carriers in 𝓤₀ and apartness values in an arbitrary
+universe 𝓥, and excluded middle, crisp excluded middle and
+propositional extensionality are then for propositions in 𝓥. In
+(c)–(e), 𝓥 is the universe of the generators, and in (e) also that of
+the type with two distinct points. The second proof in (b) takes
+𝓥 = 𝓤₀.
 
 \begin{code}
 
@@ -155,6 +165,7 @@ module gist.CohesiveApartness.TightApartness
 open import Apartness.Definition
 open import Apartness.Properties pt
 open import MLTT.Two-Properties
+open import NotionsOfDecidability.DecidableClassifier using (boolean-value')
 open import UF.Base
 open import UF.ClassicalLogic
 open import UF.DiscreteAndSeparated
@@ -203,8 +214,9 @@ Induced-Apartnesses-On-♭-Are-Decidable 𝓤 𝓥 =
 The construction from Apartness.Properties. On a discrete type X (in
 the sense of decidable equality), given a proposition P, the relation
 x ♯ y := P × (x ≠ y) is an apartness, and it is tight if ¬¬ P holds.
-Apart points exist only if P holds. We name it after Andrew Swan,
-whose idea it is [4].
+Apart points exist only if P holds. The construction is due to Tom de
+Jong, following a generalization of an idea of Andrew Swan [4]; we
+name it after Swan's idea.
 
 \begin{code}
 
@@ -321,13 +333,13 @@ at-most-one-tight-apartness-on-𝟚-gives-DNE =
  At-Most-One-Tight-Apartness-on-discrete-type-with-two-distinct-points-gives-DNE
   fe 𝟚 ((₀ , ₁) , zero-is-not-one) 𝟚-is-discrete
 
-tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE'
+tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE-via-uniqueness
  : propext 𝓤₀
  → Crisp-EM 𝓤₀
  → @♭ is-♭-discrete 𝟚
  → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓤₀
  → DNE 𝓤₀
-tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE'
+tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE-via-uniqueness
  pe cem 𝟚-is-♭-discrete φ = at-most-one-tight-apartness-on-𝟚-gives-DNE γ
   where
    I : ((_♯_ , _) : Tight-Apartness 𝟚 𝓤₀) (x y : 𝟚) → x ♯ y ↔ x ≠ y
@@ -455,6 +467,27 @@ induced-apartnesses-on-♭-are-decidable-iff-EM =
 
 \end{code}
 
+The argument used three times below: a decidable predicate P on X that
+holds at x₀ holds at every x such that every map X → 𝟚 agrees at x and
+x₀, because the characteristic function of P is such a map. We take
+the characteristic function from TypeTopology's boolean-value'.
+
+\begin{code}
+
+decidable-predicates-spread : {𝓤 𝓥 : Universe} {X : 𝓤 ̇ } (P : X → 𝓥 ̇ )
+                            → ((x : X) → is-decidable (P x))
+                            → (x₀ x : X)
+                            → ((f : X → 𝟚) → f x ＝ f x₀)
+                            → P x₀ → P x
+decidable-predicates-spread P d x₀ x c p₀ =
+ lr-implication (pr₂ (pr₂ (boolean-value' (d x))))
+  (c χ ∙ rl-implication (pr₂ (pr₂ (boolean-value' (d x₀)))) p₀)
+ where
+  χ : _ → 𝟚
+  χ y = pr₁ (boolean-value' (d y))
+
+\end{code}
+
 Refutations under minimal hypotheses. Suppose that a type I has two
 distinct points, and that every map from I to 𝟚 is constant. Then
 excluded middle fails, because the characteristic function of the
@@ -475,30 +508,11 @@ module _ {@♭ 𝓦 : Universe}
        where
 
  two-distinct-points-refute-EM : ¬ EM 𝓦
- two-distinct-points-refute-EM em = not-merely-equal (γ (d q₁) refl)
+ two-distinct-points-refute-EM em =
+  not-merely-equal
+   (decidable-predicates-spread (λ x → ∥ x ＝ q₀ ∥) (λ x → em ∥ x ＝ q₀ ∥ ∥∥-is-prop)
+     q₀ q₁ (λ f → maps-to-𝟚-are-constant f q₁ q₀) ∣ refl ∣)
   where
-   d : (x : I) → is-decidable ∥ x ＝ q₀ ∥
-   d x = em ∥ x ＝ q₀ ∥ ∥∥-is-prop
-
-   δ : {A : 𝓦 ̇ } → is-decidable A → 𝟚
-   δ (inl _) = ₁
-   δ (inr _) = ₀
-
-   χ : I → 𝟚
-   χ x = δ (d x)
-
-   χ-at-q₀ : χ q₀ ＝ ₁
-   χ-at-q₀ = κ (d q₀)
-    where
-     κ : (e : is-decidable ∥ q₀ ＝ q₀ ∥) → δ e ＝ ₁
-     κ (inl _) = refl
-     κ (inr ν) = 𝟘-elim (ν ∣ refl ∣)
-
-   γ : (e : is-decidable ∥ q₁ ＝ q₀ ∥) → e ＝ d q₁ → ∥ q₁ ＝ q₀ ∥
-   γ (inl t) _ = t
-   γ (inr ν) r = 𝟘-elim (zero-is-not-one
-                          (ap δ r ∙ maps-to-𝟚-are-constant χ q₁ q₀ ∙ χ-at-q₀))
-
    not-merely-equal : ¬ ∥ q₁ ＝ q₀ ∥
    not-merely-equal = ∥∥-rec 𝟘-is-prop (λ e → q₀-is-not-q₁ (e ⁻¹))
 
@@ -597,33 +611,10 @@ from a generator to 𝟚.
 
  EM-gives-generators-are-connected
   : EM 𝓦 → (j : J) (x : R j) → ∥ x ＝ base-point j ∥
- EM-gives-generators-are-connected em j x = γ (d x) refl
-  where
-   d : (y : R j) → is-decidable ∥ y ＝ base-point j ∥
-   d y = em ∥ y ＝ base-point j ∥ ∥∥-is-prop
-
-   δ : {A : 𝓦 ̇ } → is-decidable A → 𝟚
-   δ (inl _) = ₁
-   δ (inr _) = ₀
-
-   χ : R j → 𝟚
-   χ y = δ (d y)
-
-   χ-at-base-point : χ (base-point j) ＝ ₁
-   χ-at-base-point = κ (d (base-point j))
-    where
-     κ : (e : is-decidable ∥ base-point j ＝ base-point j ∥) → δ e ＝ ₁
-     κ (inl _) = refl
-     κ (inr ν) = 𝟘-elim (ν ∣ refl ∣)
-
-   γ : (e : is-decidable ∥ x ＝ base-point j ∥)
-     → e ＝ d x
-     → ∥ x ＝ base-point j ∥
-   γ (inl t) _ = t
-   γ (inr ν) q = 𝟘-elim (zero-is-not-one
-                          (ap δ q
-                           ∙ maps-from-generators-to-𝟚-are-constant j χ x
-                           ∙ χ-at-base-point))
+ EM-gives-generators-are-connected em j x =
+  decidable-predicates-spread (λ y → ∥ y ＝ base-point j ∥)
+   (λ y → em ∥ y ＝ base-point j ∥ ∥∥-is-prop) (base-point j) x
+   (λ f → maps-from-generators-to-𝟚-are-constant j f x) ∣ refl ∣
 
 \end{code}
 
@@ -787,29 +778,9 @@ p, because the characteristic function of p is a map I → 𝟚.
 \begin{code}
 
  EM-gives-every-point-of-I-is-p : is-set I → EM 𝓥 → (i : I) → i ＝ p
- EM-gives-every-point-of-I-is-p I-is-set em i = γ (d i) refl
-  where
-   d : (j : I) → is-decidable (j ＝ p)
-   d j = em (j ＝ p) I-is-set
-
-   δ : {A : 𝓥 ̇ } → is-decidable A → 𝟚
-   δ (inl _) = ₁
-   δ (inr _) = ₀
-
-   χ : I → 𝟚
-   χ j = δ (d j)
-
-   χ-at-p : χ p ＝ ₁
-   χ-at-p = κ (d p)
-    where
-     κ : (e : is-decidable (p ＝ p)) → δ e ＝ ₁
-     κ (inl _) = refl
-     κ (inr ν) = 𝟘-elim (ν refl)
-
-   γ : (e : is-decidable (i ＝ p)) → e ＝ d i → i ＝ p
-   γ (inl e) _ = e
-   γ (inr ν) r = 𝟘-elim (zero-is-not-one
-                          (ap δ r ∙ maps-from-I-to-𝟚-are-constant χ i ∙ χ-at-p))
+ EM-gives-every-point-of-I-is-p I-is-set em i =
+  decidable-predicates-spread (λ j → j ＝ p) (λ j → em (j ＝ p) I-is-set) p i
+   (λ f → maps-from-I-to-𝟚-are-constant f i) refl
 
 \end{code}
 
@@ -879,8 +850,8 @@ needed.
           (q-is-not-p : q ≠ p)
         where
 
-  maps-from-I-to-𝟚-are-constant' : (f : I → 𝟚) (x y : I) → f x ＝ f y
-  maps-from-I-to-𝟚-are-constant' f x y =
+  maps-from-I-to-𝟚-are-wconstant : (f : I → 𝟚) (x y : I) → f x ＝ f y
+  maps-from-I-to-𝟚-are-wconstant f x y =
    maps-from-I-to-𝟚-are-constant f x ∙ maps-from-I-to-𝟚-are-constant f y ⁻¹
 
   not-all-tight-apartnesses-on-♭-discrete-types-are-crisp
@@ -888,12 +859,12 @@ needed.
    → ¬ Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥
   not-all-tight-apartnesses-on-♭-discrete-types-are-crisp cem =
    two-distinct-points-refute-that-tight-apartnesses-are-crisp
-    I maps-from-I-to-𝟚-are-constant' q p q-is-not-p cem 𝟚-is-♭-discrete
+    I maps-from-I-to-𝟚-are-wconstant q p q-is-not-p cem 𝟚-is-♭-discrete
 
   not-all-induced-apartnesses-on-♭-are-decidable
    : ¬ Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓥
   not-all-induced-apartnesses-on-♭-are-decidable =
    two-distinct-points-refute-that-induced-apartnesses-are-decidable
-    I maps-from-I-to-𝟚-are-constant' q p q-is-not-p
+    I maps-from-I-to-𝟚-are-wconstant q p q-is-not-p
 
 \end{code}
