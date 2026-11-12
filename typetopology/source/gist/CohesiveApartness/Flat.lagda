@@ -91,7 +91,7 @@ crisp u and v, the proposition u ＝ v is crisp, and hence decided by
 crisp excluded middle. An arbitrary element of a ♭-discrete type is
 of the form ♭-counit (u ^♭) for a crisp u. Compare [1, Lemma 8.15],
 which, assuming also Axiom C1, characterizes the discrete sets as the
-sets with decidable equality.
+sets with decidable equality. Its proof needs the set to be crisp.
 
 \begin{code}
 

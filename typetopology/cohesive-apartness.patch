@@ -177,7 +177,7 @@ index 00000000..7c45e5b2
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/Flat.lagda b/source/gist/CohesiveApartness/Flat.lagda
 new file mode 100644
-index 00000000..60523422
+index 00000000..f3bb9cea
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/Flat.lagda
 @@ -0,0 +1,267 @@
@@ -274,7 +274,7 @@ index 00000000..60523422
 +crisp excluded middle. An arbitrary element of a ♭-discrete type is
 +of the form ♭-counit (u ^♭) for a crisp u. Compare [1, Lemma 8.15],
 +which, assuming also Axiom C1, characterizes the discrete sets as the
-+sets with decidable equality.
++sets with decidable equality. Its proof needs the set to be crisp.
 +
 +\begin{code}
 +
