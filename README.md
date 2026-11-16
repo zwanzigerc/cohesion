@@ -26,17 +26,20 @@ complementary closed restriction with Boolean base. Both the negative and
 positive results were checked in Lean. The [Lean guide](lean/README.md)
 specifies which proofs are included in this distribution. [Lawvere–Menni problem, proofs and related weakenings](docs/lawvere-menni.md)
 
-## Shulman on real cohesion
+## Our extensions of Shulman’s intermediate value and fixed-point theorems
 
-**Approximate intermediate values exist for arbitrary functions.** Assuming
-real cohesion, if $p<q$, $f(a)<q$ and $p<f(b)$, there merely exists a
-rational $r$ with $p<f(r)<q$. The function and target may vary in an
-ordinary cohesive context. [Approximate intermediate value theorem](docs/shulman.md#the-approximate-intermediate-value-theorem)
+**Approximate intermediate values.** Shulman’s Theorem 11.4 assumes a crisp
+function and a crisp target. We remove both assumptions and obtain a rational
+witness. Under real cohesion, for any $f\colon\mathbb R\to\mathbb R$, if
+$p<q$, $f(a)<q$ and $p<f(b)$, there merely exists a rational $r$ with
+$p<f(r)<q$. [Approximate intermediate value theorem](docs/shulman.md#the-approximate-intermediate-value-theorem)
 
-**The two classical Brouwer conclusions hold in every finite dimension.**
+**Brouwer fixed points.** We extend Shulman’s sharp and crisp fixed-point
+theorems for the disc (Theorem 12.4 and Corollary 12.5) to the closed unit
+ball in every crisp finite dimension, under weaker assumptions.
 Under crisp excluded middle, C1 for crisp pointed generators and
 non-discreteness of the Dedekind reals in the sense of ♭, every endomap
-of the closed unit ball sharply has a fixed point. For a crisp endomap
+of the ball sharply has a fixed point. For a crisp endomap
 there merely exists a fixed point in the ordinary mode. The proofs
 dispense with Axiom T and univalence. [Sharp and crisp fixed points](docs/shulman.md#the-two-classical-brouwer-fixed-point-theorems)
 
