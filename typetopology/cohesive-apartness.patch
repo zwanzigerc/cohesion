@@ -1055,10 +1055,10 @@ index 00000000..af838252
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/TightApartness.lagda b/source/gist/CohesiveApartness/TightApartness.lagda
 new file mode 100644
-index 00000000..5902436f
+index 00000000..e9e071f7
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/TightApartness.lagda
-@@ -0,0 +1,870 @@
+@@ -0,0 +1,882 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 25 October 2026; three proofs made instances of one lemma,
 +11 November 2026. See the AI disclosure in gist.CohesiveApartness.index.
@@ -1276,8 +1276,20 @@ index 00000000..5902436f
 +the sense of decidable equality), given a proposition P, the relation
 +x ♯ y := P × (x ≠ y) is an apartness, and it is tight if ¬¬ P holds.
 +Apart points exist only if P holds. The construction is due to Tom de
-+Jong, following a generalization of an idea of Andrew Swan [4]; we
-+name it after Swan's idea.
++Jong, following a generalization of an idea of Andrew Swan [4].
++
++The Agda proof below was copied and modified from Tom de Jong's
++implementation in TypeTopology's Apartness.Properties (5 February 2025).
++In our version (25 October 2026) the local construction is named
++Swan-apartness and X and P may live in different universes. Several
++proof clauses, including both cases of cotransitivity, are reproduced
++verbatim apart from spacing. TypeTopology distributes the original
++code under the GNU General Public License, version 3.
++
++Original proof:
++https://github.com/martinescardo/TypeTopology/blob/52ed2eb58d72a6bab0dd70480fa73e2291b08219/source/Apartness/Properties.lagda#L301-L332
++Upstream license:
++https://github.com/martinescardo/TypeTopology/blob/52ed2eb58d72a6bab0dd70480fa73e2291b08219/LICENSE
 +
 +\begin{code}
 +
@@ -1931,10 +1943,10 @@ index 00000000..5902436f
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/index.lagda b/source/gist/CohesiveApartness/index.lagda
 new file mode 100644
-index 00000000..761edd0a
+index 00000000..1d40b9fd
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/index.lagda
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,105 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 25 October 2026; the modules for the native ♯ of Agda 2.9.0
 +added, and three proofs of TightApartness made instances of one lemma,
@@ -1943,10 +1955,12 @@ index 00000000..761edd0a
 +AI disclosure. The results are joint work of two AI models, GPT-6
 +Astra and Claude Opus 5.5, who contributed equally to the
 +mathematics; the solution idea came from GPT-6 Astra, which also
-+reviewed the formalization. The Agda code and the prose in this
-+folder are by Claude Opus 5.5, an AI model made by Anthropic,
-+prompted by Colin Zwanziger in a conversation from 24 to 27 October
-+2026. The modules Sharp, CrispInduction and Theorems were added on
++reviewed the formalization. Claude Opus 5.5, an AI model made by
++Anthropic, developed the Agda formalization and its exposition at
++Colin Zwanziger's prompting from 24 to 27 October 2026. The proof of
++Swan-apartness in TightApartness incorporates code copied and modified
++from Tom de Jong's implementation in TypeTopology's Apartness.Properties.
++The modules Sharp, CrispInduction and Theorems were added on
 +11 November 2026 by Claude Opus 5.5, prompted by Colin Zwanziger in
 +another conversation, when the folder moved to Agda 2.9.0; they
 +follow Shulman's derivation of crisp induction from the sharp
