@@ -168,8 +168,11 @@ agda source/gist/CohesiveApartness/index.lagda
 agda source/gist/CohesiveApartness/FlatSplit.lagda
 ```
 
-The [patch](../typetopology/cohesive-apartness.patch) adds the same seven
-literate Agda modules to a local copy of TypeTopology. To use it in place
+The [patch](../typetopology/cohesive-apartness.patch) adds the seven
+modules of the standalone apartness development to a local copy of
+TypeTopology. The source folder also contains two modules on crisp
+truncation and sharp types used by the larger cohesion development. To
+use the patch in place
 of the `cp -R` step, run `git -C tt apply ../typetopology/cohesive-apartness.patch`
 from the root of this repository after checking out the revision above.
 

@@ -29,6 +29,10 @@ jobs:
           git clone https://github.com/martinescardo/TypeTopology.git tt
           cd tt
           git checkout 52ed2eb58d72a6bab0dd70480fa73e2291b08219
-          cp -r ../typetopology/source/gist/CohesiveApartness source/gist/
-          agda source/gist/CohesiveApartness/index.lagda
+          cp -R ../typetopology/source/gist/. source/gist/
+          agda +RTS -M3G -RTS source/gist/Cohesion/index.lagda
           agda source/gist/CohesiveApartness/FlatSplit.lagda
+          agda +RTS -M3G -RTS source/gist/RealCohesion/FlatSplit.lagda
+
+      - name: Check the standalone native Agda modules
+        run: python3 agda/precohesion/check.py

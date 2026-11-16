@@ -1,6 +1,7 @@
 # Cohesion
 
-This project studies cohesive type theory in Agda and geometric morphisms of toposes in Lean. The apartness Agda modules and the Lean package are available here. The guides also describe results checked in the larger local Agda development.
+This repository contains Agda formalizations in cohesive type theory and
+Lean formalizations about geometric morphisms of toposes.
 
 - [Lawvere–Menni on pre-cohesion and local connectedness](#lawveremenni-on-pre-cohesion-and-local-connectedness)
 - [Six nLab open problems and their resolutions](docs/shulman.md#the-nlab-open-problems)
@@ -78,6 +79,6 @@ The Agda formalization uses the native sharp modality in Agda 2.9.0.
 
 ## Checking the code
 
-- [Apartness in Agda 2.9.0 with TypeTopology](apartness/README.md)
+- [Agda 2.9.0 with TypeTopology](typetopology/README.md#build)
 - [Native Agda on pre-cohesion](agda/precohesion/README.md)
 - [Lean 4 and mathlib](lean/README.md)
