@@ -1,10 +1,5 @@
 # Tight apartness and excluded middle in cohesive type theory
 
-Over crisp excluded middle, each of two principles about tight apartness is
-equivalent to excluded middle in the cohesive mode. Both principles fail in
-real cohesion with crisp excluded middle. The paper gives the mathematical
-proofs. This guide gives their precise Agda statements and explains how native
-sharp (♯) supplies the discreteness result used in the first principle.
 [Paper (PDF)](../paper/tight-apartness-and-excluded-middle.pdf) ·
 [LaTeX source](../paper/tight-apartness-and-excluded-middle.tex) ·
 [Agda index](../typetopology/source/gist/CohesiveApartness/index.lagda)
@@ -12,7 +7,8 @@ sharp (♯) supplies the discreteness result used in the first principle.
 ## The problems
 
 The problems were posed on the nLab by the prolific contributor Anonymouse.
-On 24 October 2026 they read as follows.
+We use Shulman’s formulation of Axiom C1. On 24 October 2026 the questions
+read as follows. [The nLab problem list](https://ncatlab.org/nlab/show/open+problems+in+homotopy+type+theory)
 
 1. Suppose a discrete cohesive type A comes with a tight apartness relation.
    Then, assuming crisp excluded middle and axiom C1, is the tight apartness
@@ -21,7 +17,9 @@ On 24 October 2026 they read as follows.
    assuming crisp excluded middle and axiom C1, is the tight apartness
    relation on ♭A in the cohesive mode decidable?
 
-[The nLab problem list](https://ncatlab.org/nlab/show/open+problems+in+homotopy+type+theory)
+We answer both questions in the negative. Under these hypotheses, each
+assertion is equivalent to excluded middle in the cohesive mode. In
+particular, each fails in real cohesion.
 
 Write **P₁** for the first statement and **P₂** for the second. In both,
 the carrier A is crisp and its tight apartness relation is an ordinary
