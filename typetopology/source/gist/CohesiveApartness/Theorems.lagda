@@ -2,6 +2,9 @@ Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 Zwanziger, 11 November 2026, from gist.CohesiveApartness.FlatSplit of
 25 October 2026. See the AI disclosure in gist.CohesiveApartness.index.
 
+This module is licensed under the GNU General Public License, version 3.
+SPDX-License-Identifier: GPL-3.0-only
+
 The main theorems of gist.CohesiveApartness.TightApartness without the
 hypothesis that 𝟚 is ♭-discrete, in --safe mode.
 

@@ -3,6 +3,9 @@ Zwanziger, 25 October 2026; the modules for the native ♯ of Agda 2.9.0
 added, and three proofs of TightApartness made instances of one lemma,
 11 November 2026.
 
+This module is licensed under the GNU General Public License, version 3.
+SPDX-License-Identifier: GPL-3.0-only
+
 AI disclosure. The results are joint work of two AI models, GPT-6
 Astra and Claude Opus 5.5, who contributed equally to the
 mathematics; the solution idea came from GPT-6 Astra, which also
@@ -22,12 +25,11 @@ were type-checked with Agda 2.9.0 (release candidate 3) against
 TypeTopology commit 52ed2eb of 24 October 2026. Flat, TightApartness
 and FlatSplit, which don't need the native ♯, were also checked with
 Agda 2.8.0, TightApartness again after that change. TypeTopology's
-AI-Policy.md says that AI generated Agda code or prose will not be
-considered. This folder is therefore offered for discussion only,
-unless the maintainers decide otherwise. A paper presenting the
-results is in the repository
+AI-Policy.md excludes submissions of AI-generated Agda code or prose.
+The cohesion repository contains these modules and the accompanying
+paper.
 
- https://github.com/zwanzigerc/cohesive-apartness
+ https://github.com/zwanzigerc/cohesion
 
 This folder studies two problems about tight apartness relations in
 the presence of the flat modality ♭, formerly listed as open problems
