@@ -3,7 +3,7 @@
 This repository contains Agda formalizations in cohesive type theory and
 Lean formalizations about geometric morphisms of toposes.
 
-- [Lawvere–Menni on pre-cohesion and local connectedness](#lawveremenni-precohesion-problem)
+- [Lawvere–Menni precohesion problem](#lawveremenni-precohesion-problem)
 - [Six nLab open problems and their resolutions](docs/shulman.md#the-nlab-open-problems)
 - [Questions raised by Shulman](docs/shulman.md#questions-raised-by-shulman)
 - [Weakened and corrected statements](#weakened-and-corrected-statements)
