@@ -40,7 +40,10 @@ Under crisp excluded middle, C1 for crisp pointed generators and
 non-discreteness of the Dedekind reals in the sense of ♭, every endomap
 of the ball sharply has a fixed point. For a crisp endomap
 there merely exists a fixed point in the ordinary mode. The proofs
-dispense with Axiom T and univalence. [Sharp and crisp fixed points](docs/shulman.md#the-two-classical-brouwer-fixed-point-theorems)
+dispense with Axiom T and univalence. In separate work we construct a
+real-cohesive ∞-topos with univalent universes in which Shulman’s approximate
+fixed-point theorem for the disc (Theorem 12.6) does not extend from crisp
+to arbitrary endomaps. [Sharp and crisp fixed points](docs/shulman.md#the-two-classical-brouwer-fixed-point-theorems)
 
 Under real cohesion and crisp excluded middle, the functions on points induced
 by crisp maps $\mathbb R^n\to\mathbb R$ are exactly the ε–δ continuous
