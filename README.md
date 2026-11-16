@@ -26,7 +26,7 @@ complementary closed restriction with Boolean base. Both the negative and
 positive results were checked in Lean. The [Lean guide](lean/README.md)
 specifies which proofs are included in this distribution. [Lawvere–Menni problem, proofs and related weakenings](docs/lawvere-menni.md)
 
-## Our extensions of Shulman’s intermediate value and fixed-point theorems
+## Our results on Shulman’s *Brouwer’s fixed-point theorem in real-cohesive homotopy type theory*
 
 **Approximate intermediate values.** Shulman’s Theorem 11.4 assumes a crisp
 function and a crisp target. We remove both assumptions and obtain a rational
