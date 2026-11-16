@@ -2,7 +2,7 @@
 
 **Pre-cohesion: no.** Lawvere and Menni ask after [§10, Corollary 10.4](https://www.tac.mta.ca/tac/volumes/30/26/30-26.pdf#page=22) whether every pre-cohesive geometric morphism is stably pre-cohesive. By that corollary, this is equivalent to asking whether every such morphism is locally connected. We construct a pre-cohesive morphism of presheaf toposes that is not locally connected.
 
-**Cohesion: yes.** Every cohesive geometric morphism between elementary toposes is locally connected, hence stably pre-cohesive. Here *cohesive* means pre-cohesive with Lawvere's Continuity axiom. We do not assume choice, a natural numbers object, or sufficient cohesion. These are theorems about ordinary elementary toposes; the native Agda development concerning higher types has a different scope.
+**Cohesion: yes.** Every cohesive geometric morphism between elementary toposes is locally connected, hence stably pre-cohesive. Here *cohesive* means pre-cohesive with Lawvere's Continuity axiom. We do not assume choice, a natural numbers object, or sufficient cohesion. These are theorems about ordinary elementary toposes; an internal Agda development concerning higher types has a different scope, described [separately](../agda/precohesion/README.md).
 
 ## Where pre-cohesion fails
 

@@ -1,0 +1,81 @@
+# Agda statements with weaker cohesion hypotheses
+
+The right-hand theorem in each row replaces Axiom $R♭$ by C1 for an ordinary family of pointed generators and mere existence of a generator carrying a real function with a strict rise. The two columns give the declaration names in `RealCohesion.Theorems` and `RealCohesion.TheoremsFromC1`, respectively. All other hypotheses, including any crispness of the map, crisp excluded middle, Axiom T, and univalence, are as stated in the individual theorems. [Mathematical statements and notation](shulman.md#the-two-classical-brouwer-fixed-point-theorems)
+
+| With real cohesion | With C1 and mere NC |
+| --- | --- |
+| `crisp-functions-are-continuous-without-T` | `crisp-functions-are-continuous-without-T-from-C1-and-NC` |
+| `crisp-exact-IVT-without-T` | `crisp-exact-IVT-without-T-from-C1-and-NC` |
+| `rational-detection` | `rational-detection-from-C1-and-NC` |
+| `approximate-IVT-with-rational-witness` | `approximate-IVT-with-rational-witness-from-C1-and-NC` |
+| `crisp-functions-are-continuous-everywhere-without-T` | `crisp-functions-are-continuous-everywhere-without-T-from-C1-and-NC` |
+| `exact-IVT-without-T` | `exact-IVT-without-T-from-C1-and-NC` |
+| `crisp-real-functions-are-determined-by-crisp-points` | `crisp-real-functions-are-determined-by-crisp-points-from-C1-and-NC` |
+| `R♭-refutes-analytic-LLPO` | `C1-and-NC-refute-analytic-LLPO` |
+| `R♭-gives-sequential-hitting` | `C1-and-NC-give-sequential-hitting` |
+| `R♭-gives-positive-sequential-hitting-for-functionals` | `C1-and-NC-give-positive-sequential-hitting-for-functionals` |
+| `R♭-gives-sequential-hitting-for-functionals` | `C1-and-NC-give-sequential-hitting-for-functionals` |
+| `R♭-gives-closed-half-lines` | `C1-and-NC-give-closed-half-lines` |
+| `R♭-gives-crisp-cube-fixed-points` | `C1-and-NC-give-crisp-cube-fixed-points` |
+| `R♭-gives-sharp-cube-fixed-points` | `C1-and-NC-give-sharp-cube-fixed-points` |
+| `R♭-gives-crisp-cube-fixed-points-in-every-dimension` | `C1-and-NC-give-crisp-cube-fixed-points-in-every-dimension` |
+| `R♭-gives-sharp-cube-fixed-points-in-every-dimension` | `C1-and-NC-give-sharp-cube-fixed-points-in-every-dimension` |
+| `R♭-gives-crisp-fixed-points-in-dimension-0` | `C1-and-NC-give-crisp-fixed-points-in-dimension-0` |
+| `R♭-gives-crisp-fixed-points-in-dimension-1` | `C1-and-NC-give-crisp-fixed-points-in-dimension-1` |
+| `R♭-gives-sharp-fixed-points-in-dimension-0` | `C1-and-NC-give-sharp-fixed-points-in-dimension-0` |
+| `R♭-gives-sharp-fixed-points-in-dimension-1` | `C1-and-NC-give-sharp-fixed-points-in-dimension-1` |
+| `R♭-and-T-give-approximate-cube-fixed-points` | `C1-NC-and-T-give-approximate-cube-fixed-points` |
+| `R♭-and-T-give-approximate-cube-fixed-points-in-every-dimension` | `C1-NC-and-T-give-approximate-cube-fixed-points-in-every-dimension` |
+| `R♭-and-T-give-approximate-fixed-points-in-dimension-0` | `C1-NC-and-T-give-approximate-fixed-points-in-dimension-0` |
+| `R♭-and-T-give-approximate-fixed-points-in-dimension-1` | `C1-NC-and-T-give-approximate-fixed-points-in-dimension-1` |
+| `R♭-gives-crisp-fixed-points-in-dimension-2` | `C1-and-NC-give-crisp-fixed-points-in-dimension-2` |
+| `R♭-gives-sharp-fixed-points-in-dimension-2` | `C1-and-NC-give-sharp-fixed-points-in-dimension-2` |
+| `R♭-and-T-give-approximate-fixed-points-in-dimension-2` | `C1-NC-and-T-give-approximate-fixed-points-in-dimension-2` |
+| `R♭-gives-crisp-fixed-points-on-the-ball` | `C1-and-NC-give-crisp-fixed-points-on-the-ball` |
+| `R♭-gives-sharp-fixed-points-on-the-ball` | `C1-and-NC-give-sharp-fixed-points-on-the-ball` |
+| `R♭-gives-crisp-fixed-points-on-the-ball-in-every-dimension` | `C1-and-NC-give-crisp-fixed-points-on-the-ball-in-every-dimension` |
+| `R♭-gives-sharp-fixed-points-on-the-ball-in-every-dimension` | `C1-and-NC-give-sharp-fixed-points-on-the-ball-in-every-dimension` |
+| `R♭-gives-crisp-fixed-points-on-the-disc` | `C1-and-NC-give-crisp-fixed-points-on-the-disc` |
+| `R♭-gives-sharp-fixed-points-on-the-disc` | `C1-and-NC-give-sharp-fixed-points-on-the-disc` |
+| `R♭-and-T-give-approximate-fixed-points-on-the-ball` | `C1-NC-and-T-give-approximate-fixed-points-on-the-ball` |
+| `R♭-and-T-give-approximate-fixed-points-on-the-ball-in-every-dimension` | `C1-NC-and-T-give-approximate-fixed-points-on-the-ball-in-every-dimension` |
+| `R♭-and-T-give-approximate-fixed-points-on-the-disc` | `C1-NC-and-T-give-approximate-fixed-points-on-the-disc` |
+| `R♭-gives-strong-extensionality` | `C1-and-NC-give-strong-extensionality` |
+| `R♭-gives-rational-detection` | `C1-and-NC-give-rational-detection` |
+| `R♭-gives-rational-detection-in-dimension` | `C1-and-NC-give-rational-detection-in-dimension` |
+| `R♭-gives-crisp-exact-IVT` | `C1-and-NC-give-crisp-exact-IVT` |
+| `R♭-gives-Shulman-11-5` | `C1-and-NC-give-Shulman-11-5` |
+| `R♭-gives-approximate-fixed-points-of-crisp-maps` | `C1-and-NC-give-approximate-fixed-points-of-crisp-maps` |
+| `R♭-gives-Target-12-6-cube-from-LEM-in-dimension-0` | `C1-and-NC-give-Target-12-6-cube-from-LEM-in-dimension-0` |
+| `R♭-gives-Target-12-6-cube-from-LEM-in-dimension-1` | `C1-and-NC-give-Target-12-6-cube-from-LEM-in-dimension-1` |
+| `R♭-gives-Target-12-6-cube-from-LEM-in-dimension-2` | `C1-and-NC-give-Target-12-6-cube-from-LEM-in-dimension-2` |
+| `R♭-gives-Target-12-6-cube-from-LEM` | `C1-and-NC-give-Target-12-6-cube-from-LEM` |
+| `approximate-IVT` | `approximate-IVT-from-C1-and-NC` |
+| `canonical-map-is-an-embedding` | `canonical-map-is-an-embedding-from-C1-and-NC` |
+| `Shulman-Corollary-11-6-without-T` | `Shulman-Corollary-11-6-without-T-from-C1-and-NC` |
+| `crisp-real-functions-are-the-continuous-maps` | `crisp-real-functions-are-the-continuous-maps-from-C1-and-NC` |
+| `R♭-gives-Shulman-11-6` | `C1-and-NC-give-Shulman-11-6` |
+| `R♭-gives-♭-apply₁-is-injective` | `C1-and-NC-give-♭-apply₁-is-injective` |
+| `R♭-gives-Shulman-11-5-from-R♭-alone` | `C1-and-NC-alone-give-Shulman-11-5` |
+| `R♭-gives-Target-11-5` | `C1-and-NC-give-Target-11-5` |
+| `R♭-gives-crisp-real-continuity` | `C1-and-NC-give-crisp-real-continuity` |
+| `R♭-gives-Target-crisp-real-continuity` | `C1-and-NC-give-Target-crisp-real-continuity` |
+| `R♭-gives-continuous-values` | `C1-and-NC-give-continuous-values` |
+| `R♭-gives-Remark-3-4-from-R♭-alone` | `C1-and-NC-alone-give-Remark-3-4` |
+| `R♭-gives-Target-3-4` | `C1-and-NC-give-Target-3-4` |
+| `R♭-gives-continuous-values-in-dimension` | `C1-and-NC-give-continuous-values-in-dimension` |
+| `R♭-gives-♭-apply-is-injective` | `C1-and-NC-give-♭-apply-is-injective` |
+| `R♭-gives-Target-3-3-embedding-and-continuity` | `C1-and-NC-give-Target-3-3-embedding-and-continuity` |
+| `R♭-gives-continuous-maps-are-values` | `C1-and-NC-give-continuous-maps-are-values` |
+| `R♭-gives-Target-3-3` | `C1-and-NC-give-Target-3-3` |
+| `R♭-gives-Target-11-6` | `C1-and-NC-give-Target-11-6` |
+| `Lemma-8-15-from-decidable-equality` | `Lemma-8-15-from-decidable-equality-from-C1-and-NC` |
+| `unrestricted-Lemma-8-15-is-false` | `unrestricted-Lemma-8-15-is-false-from-C1-and-NC` |
+| `R♭-gives-crisp-exact-IVT-from-total-order` | `C1-and-NC-give-crisp-exact-IVT-from-total-order` |
+| `R♭-gives-crisp-exact-IVT-from-decidable-order` | `C1-and-NC-give-crisp-exact-IVT-from-decidable-order` |
+| `R♭-gives-Target-3-5` | `C1-and-NC-give-Target-3-5` |
+| `UA-and-R♭-give-Target-12-6-cube` | `UA-C1-and-NC-give-Target-12-6-cube` |
+| `UA-and-R♭-give-approximate-fixed-points-on-the-disc` | `UA-C1-and-NC-give-approximate-fixed-points-on-the-disc` |
+| `UA-and-R♭-give-approximate-fixed-points-on-the-disc-for-real-ε` | `UA-C1-and-NC-give-approximate-fixed-points-on-the-disc-for-real-ε` |
+
+The shape counterexample for subsets of the reals still uses the reverse implication of $R♭$. So does the $\mathbb R$-null version of the converse in Lemma 8.15 for crisp sets. The separate C1 result for a crisp set characterizes ♭-discreteness by decidable equality. `Scope and retained assumptions`
