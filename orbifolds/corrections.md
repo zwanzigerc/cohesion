@@ -54,11 +54,11 @@ The following identifications and resulting orbifold statements have paper proof
 
 ## Good fibrations through the modal prism
 
-These statements concern abstract shape and Dedekind real cohesion in Myers’s other paper. The model results are paper arguments. Their interpretation as nonderivability for the full native language requires a soundness theorem. [Myers, *Good fibrations through the modal prism*](https://arxiv.org/pdf/1908.08034v4)
+These statements concern abstract shape and Dedekind real cohesion in Myers’s other paper. The two countermodels concerning Theorem 8.6 and higher connectedness have paper proofs. Interpreting a model counterexample as nonderivability for the full native language requires a soundness theorem. [Myers, *Good fibrations through the modal prism*](https://arxiv.org/pdf/1908.08034v4)
 
 | Statement or question | Correction or resolution |
 | --- | --- |
 | Lemma 4.9(3), Theorem 4.10 and Corollary 9.14 | The use of Shulman’s Lemma 8.15 requires decidable equality on the set of shape components $\int_0 X$, as holds for crisp $X$ under the stated hypotheses. Corollary 9.14 survives because the orbits of a permutation of a finite set have decidable equality. |
-| Remark 6.5 | For Dedekind reals, the uniform implication from $r\ne0$ to $r\mathrel{\#}0$ is equivalent to the analytic Markov principle. It fails in a model of $R^\flat$, crisp excluded middle and sharp choice. |
+| Remark 6.5 | For Dedekind reals, the uniform implication from $r\ne0$ to $r\mathrel{\#}0$ is equivalent to analytic Markov. Agda proves the equivalence of the order and apartness forms. Lean checks that analytic Markov fails in an ordinary sheaf model of real cohesion, crisp excluded middle and sharp choice. [Agda equivalence](../typetopology/source/gist/RealCohesion/AnalyticMarkovObstruction.lagda#L146) · [Lean countermodel](../lean/README.md#the-pointless-end-model) |
 | Theorem 8.6, does the comparison extend to ordinary connected types at $n=0$? | **No** in the scalar-end sheaf model. The extension would imply $R$-nullity of the binary quotient by every proposition, hence overt connectedness of the real line for arbitrary subsets. Preservation of ordinary **zero-connectedness** itself still holds by Lemma 8.5. |
 | Question in §8, does shape preserve ordinary $n$-connectedness for $n\ge1$? | **No** in a sheaf-of-spaces model with two-dimensional ends. An $n$-connected iterated delooping has shape that fails to be $n$-connected. Both models in these last two rows satisfy crisp excluded middle and $R^\flat$ and refute Axiom T. The corresponding questions with T remain open. |

@@ -1,11 +1,12 @@
 # Cohesion
 
 This repository contains Agda formalizations in cohesive type theory and
-Lean formalizations about geometric morphisms of toposes.
+Lean formalizations of geometric morphisms, sheaf models and a counterexample in groupoid-valued stacks.
 
 - [Lawvere–Menni precohesion problem](#lawveremenni-precohesion-problem)
-- [Six nLab open problems and their resolutions](docs/shulman.md#the-nlab-open-problems)
+- [Six nLab open problems and their resolutions](docs/shulman.md#the-nlab-open-problems), including [the Lean countermodel for questions 2 and 3](lean/README.md#the-pointless-end-model)
 - [Questions raised by Shulman](docs/shulman.md#questions-raised-by-shulman)
+- [Lean counterexamples and available proof code](lean/README.md#countermodels)
 - [Weakened and corrected statements](#weakened-and-corrected-statements)
 - [Orbifolds, the revised theorem and its axioms](orbifolds/README.md)
 - [Source credits and licenses](docs/sources.md)
@@ -45,14 +46,22 @@ dispense with Axiom T and univalence. [Sharp and crisp fixed points](docs/shulma
 
 Under real cohesion and crisp excluded middle, we show that the functions on
 points induced by crisp maps $\mathbb R^n\to\mathbb R$ are exactly the
-$\varepsilon$–$\delta$ continuous functions, for every crisp finite dimension
+ε–δ continuous functions, for every crisp finite dimension
 $n$ (§11). In Shulman’s intended model we exhibit a subset of the reals whose
-shape has fundamental group surjecting onto $\mathbb Z$. We give a
-real-cohesive model with crisp excluded middle in which analytic Markov’s
-principle fails (§8.3), and one with sharp choice in which Lawvere’s
-Continuity axiom fails (§10). At the chart
-$B\mathbb R$ in a model of sharp choice, we show that Shulman’s stronger
-choice formula (3.2) fails. [Questions and resolutions](docs/shulman.md#questions-raised-by-shulman) · [Weakened and corrected statements](docs/shulman.md#weakened-and-corrected-statements)
+shape has fundamental group surjecting onto $\mathbb Z$ (§11).
+[Questions and resolutions](docs/shulman.md#questions-raised-by-shulman) · [Weakened and corrected statements](docs/shulman.md#weakened-and-corrected-statements)
+
+**Lean counterexamples.** We give two ordinary sheaf models of real cohesion
+with crisp excluded middle and sharp choice. Lean proves that analytic Markov’s
+principle and Axiom T (§8.3) both fail in the pointless-end model. The same model
+refutes the full fan theorem, answering Anonymouse’s nLab question.
+In the long-ray model, Lean proves that Lawvere’s Continuity axiom (§10)
+fails already for a countable power. The extensions to higher sheaves have
+paper proofs. [Pointless-end model](lean/README.md#the-pointless-end-model) · [Long-ray model](lean/README.md#the-long-ray-model)
+
+For Shulman’s choice question (§3.2), Lean checks that the stronger formula
+(3.2) fails at the chart $B\mathbb R$ while sharp choice (3.3) holds in the
+same $(2,1)$-category of groupoid-valued stacks. [Stack counterexample and scope of the formalization](lean/README.md#the-stack-counterexample)
 
 ## Our results on Myers’s *Orbifolds as microlinear types in synthetic differential cohesive homotopy type theory*
 
