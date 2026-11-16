@@ -568,16 +568,14 @@ write-up, for the form of sequential hitting for functionals, for the
 proof of Lemma 3.6 and for the blueprint addendum, and Astra for the
 audits of Theorem 7.10 and Lemma 3.6.
 
-This folder treats the first four of six nLab questions we answer.
-The two questions on tight apartness are treated in
-gist.CohesiveApartness. For the questions and their resolutions, see
+This folder formalizes parts of the research notes [1]. They answer
+four of the problems listed under "Real-cohesive homotopy type
+theory" on the nLab page
 
- https://github.com/zwanzigerc/cohesion/blob/main/docs/shulman.md#the-nlab-open-problems
- https://ncatlab.org/nlab/show/open+problems+in+homotopy+type+theory#InCohesiveHomotopyTypeTheory
+ https://ncatlab.org/nlab/show/open+problems+in+homotopy+type+theory
 
-The research notes [1] also study questions raised in Shulman's
-paper [2]. Several answers in [1] are about models, for instance
-independence results, while
+and study questions left open in Shulman's paper [2]. Several answers
+in [1] are about models, for instance independence results, while
 Agda's --cohesion reasons inside the theory. For those we formalize
 some of the frame-level properties of the models that the arguments
 use, relative to hypotheses on the frames involved. Assuming such
@@ -586,13 +584,7 @@ results, not independence. We formalize such conditional results too:
 internal refutations of the principles in question from hypotheses
 abstracted from the countermodels.
 
-For questions 2 and 3, Lean checks an ordinary sheaf model in which
-analytic Markov, Axiom T and the full fan theorem all fail. The guide
-links the public Lean constructions and describes the complete local proof.
-
- https://github.com/zwanzigerc/cohesion/blob/main/lean/README.md#the-pointless-end-model
-
-The nLab problems treated in this folder:
+The nLab problems:
 
  1. Assuming Axiom R♭, is the shape of every subset of ℝ a set? No:
     it fails in Shulman's intended model [1, Theorem 5.3], by a
@@ -664,9 +656,7 @@ The nLab problems treated in this folder:
     the analytic Markov principle, Axiom T and the full fan theorem.
 
  3. Does the full fan theorem follow? No, by the same model
-    [1, Theorem 2.5]. PointlessEnd.Chart.main proves the negation
-    of the full fan theorem in ordinary sheaves in Lean.
-    The frame-level failure, a bar that no cover
+    [1, Theorem 2.5]. The frame-level failure, a bar that no cover
     bars uniformly, is in gist.RealCohesion.PointlessEnd, relative to
     the same hypotheses. Conditional internal refutation, formalized:
     a family of splitting bars that don't all contain the empty word
@@ -706,18 +696,18 @@ The nLab problems treated in this folder:
     (gist.RealCohesion.RationalDetection; FlatSplit states it from
     Axiom R♭ alone).
 
+The remaining two nLab problems in that list, on the ∞-topos meaning
+of Axiom R♭ and on a formulation in multimodal type theory, are not
+treated.
+
 Follow-up questions [1, §6]:
 
  * Crispness under Shulman's axioms. Do the approximate intermediate
    value and Brouwer fixed-point theorems hold for non-crisp functions
    assuming only Axiom R♭ (and univalence)? For the intermediate value
    theorem, yes, and this is formalized; see nLab problem 4. For the
-   Brouwer fixed-point theorem we give a categorical counterexample in
-   separate work. Under crisp excluded middle and Axioms R♭ and T, Agda proves
-   the approximate fixed-point theorem for ordinary maps on the closed
-   unit ball in every crisp finite dimension (gist.RealCohesion.Theorems).
-   For a pointed type, overt connectedness is equivalent to the
-   nullness of all the sets
+   Brouwer fixed-point theorem it is open [1, §6]. For a pointed type,
+   overt connectedness is equivalent to the nullness of all the sets
    𝟚-mod P, obtained from 𝟚 by identifying ₀ and ₁ when P holds, and
    ℝ-nullness of all of them gives the non-crisp intermediate value
    theorem (gist.RealCohesion.OvertConnectedness). The proof from
@@ -762,19 +752,15 @@ Follow-up questions [1, §6]:
      (gist.RealCohesion.ShapeProducts). Supplied contractions are much
      stronger than the mere agreement of zero-shapes in the tower.
 
- * Shulman's stronger choice formula (3.2). It holds in every ordinary
-   local topos whose base satisfies the axiom of choice [1, §6]. The Lean
-   libraries [6] verify it in their two ordinary models. In a different
-   model, the (2,1)-category of groupoid-valued stacks, Lean checks that
-   (3.2) fails at the chart Bℝ while sharp choice (3.3) holds for every
-   0-truncated index map. The checked statements are StackChart.failure₁
-   and StackChart.sharpChoice_eq_top₁.
+ * Shulman's rejected form of choice. It holds in every local topos
+   whose base satisfies the axiom of choice [1, §6]. Whether it
+   follows internally from Axiom AC is open. Not formalized in Agda;
+   the Lean libraries [6] check it in their two ordinary models.
 
-   https://github.com/zwanzigerc/cohesion/blob/main/lean/README.md#the-stack-counterexample
-
-The Agda development proves two positive results from [1, Theorems 3.3
-and 4.3], on functions ℝⁿ → ℝ and on approximate fixed points for
-ordinary endomaps, for every crisp dimension n
+The two further questions that Shulman raises in passing, on the
+functions ℝⁿ → ℝ and on removing crispness from the approximate
+Brouwer fixed-point theorem, are answered in [1, Theorems 3.3 and
+4.3], and both answers are formalized, for every crisp dimension n
 (see below and gist.RealCohesion.Theorems). The first assumes crisp
 excluded middle and Axiom R♭; two of its three parts need Axiom R♭
 alone. The second is formalized for the cube and for the ball from
