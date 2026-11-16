@@ -43,13 +43,26 @@ of the ball sharply has a fixed point. For a crisp endomap
 there merely exists a fixed point in the ordinary mode. The proofs
 dispense with Axiom T and univalence. [Sharp and crisp fixed points](docs/shulman.md#the-two-classical-brouwer-fixed-point-theorems)
 
-## Orbifolds
+Under real cohesion and crisp excluded middle, we show that the functions on
+points induced by crisp maps $\mathbb R^n\to\mathbb R$ are exactly the
+$\varepsilon$–$\delta$ continuous functions, for every crisp finite dimension
+$n$ (§11). In Shulman’s intended model we exhibit a subset of the reals whose
+shape has fundamental group surjecting onto $\mathbb Z$. We give a
+real-cohesive model with crisp excluded middle in which analytic Markov’s
+principle fails (§8.3), and one with sharp choice in which Lawvere’s
+Continuity axiom fails (§10). At the chart
+$B\mathbb R$ in a model of sharp choice, we show that Shulman’s stronger
+choice formula (3.2) fails. [Questions and resolutions](docs/shulman.md#questions-raised-by-shulman) · [Weakened and corrected statements](docs/shulman.md#weakened-and-corrected-statements)
 
-**The Rezk completion of a crisp pregroupoid of ordinary manifolds is an
-orbifold if its source is an ordinary local homeomorphism, its anchor is
-cover-proper, and its arrow manifold has a supplied crisp countable basis.**
-Cover-properness here uses crisp families indexed by discrete sets. These
-hypotheses include the unit groupoid of the smooth line. [The revised theorem](orbifolds/README.md#the-revised-main-theorem) · [Foundation](orbifolds/README.md#axioms-of-the-revised-foundation) · [Axioms used in the proof](orbifolds/README.md#axioms-used-by-the-main-theorem)
+## Our results on Myers’s *Orbifolds as microlinear types in synthetic differential cohesive homotopy type theory*
+
+**Our revision of Theorem 6.3.7.** Let $G$ be a crisp pregroupoid of ordinary
+finite-dimensional manifolds. We prove that its Rezk completion is an orbifold
+if its source is an ordinary local homeomorphism, its anchor is cover-proper,
+and its arrow manifold has a supplied crisp countable basis. Cover-properness
+uses crisp families of opens indexed by discrete sets. The diagonal of the
+smooth line satisfies this condition, so our theorem includes the unit
+groupoid of the smooth line. [Myers’s paper](https://arxiv.org/abs/2205.15887v1) · [Our revised theorem](orbifolds/README.md#the-revised-main-theorem) · [Foundation](orbifolds/README.md#axioms-of-the-revised-foundation) · [Axioms used in the proof](orbifolds/README.md#axioms-used-by-the-main-theorem)
 
 ## Weakened and corrected statements
 
