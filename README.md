@@ -25,7 +25,7 @@ connected? Yes.** Cohesion adds Lawvere's Continuity axiom to pre-cohesion.
 Under that axiom, the morphism also has an open restriction of quality type and a
 complementary closed restriction with Boolean base. Verified in unpublished Lean. [Lawvere–Menni problem, proofs and related weakenings](docs/lawvere-menni.md)
 
-## Our results on Shulman’s *Brouwer’s fixed-point theorem in real-cohesive homotopy type theory*
+## Results on Shulman’s *Brouwer’s fixed-point theorem in real-cohesive homotopy type theory*
 
 **Approximate intermediate value theorem.** Shulman’s Theorem 11.4 assumes a crisp
 function and a crisp target. We remove both assumptions and obtain a rational
@@ -59,7 +59,7 @@ analytic Markov’s principle, and removing crispness from the approximate IVT
 are [three of the six nLab open problems we resolve](docs/shulman.md#the-nlab-open-problems).
 [Questions and resolutions](docs/shulman.md#questions-raised-by-shulman) · [Weakened and corrected statements](docs/shulman.md#weakened-and-corrected-statements)
 
-## Our results on Myers’s *Orbifolds as microlinear types in synthetic differential cohesive homotopy type theory*
+## Results on Myers’s *Orbifolds as microlinear types in synthetic differential cohesive homotopy type theory*
 
 **Our revision of Theorem 6.3.7.** Let $G$ be a crisp pregroupoid of ordinary
 finite-dimensional manifolds. We prove that its Rezk completion is an orbifold
