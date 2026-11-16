@@ -13,11 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Install Agda 2.9.0 (release candidate 3)
+      - name: Install Agda 2.9.0
         run: |
           curl -fsSL -o agda.tar.xz \
-            https://github.com/agda/agda/releases/download/v2.9.0-rc3/Agda-v2.9.0-rc3-linux.tar.xz
-          echo "bde55ce6855fec13404e6837655b7a98d5174ae82e31525e17fc641dac742cc2  agda.tar.xz" \
+            https://github.com/agda/agda/releases/download/v2.9.0/Agda-v2.9.0-linux.tar.xz
+          echo "a9f9b19dc911b363e97f7f7938ae642d02e814f71d2e1eec5428825f1aede786  agda.tar.xz" \
             | sha256sum -c -
           mkdir -p "$HOME/agda-bin"
           tar -xf agda.tar.xz -C "$HOME/agda-bin"
