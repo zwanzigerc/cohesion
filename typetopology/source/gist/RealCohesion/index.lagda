@@ -584,7 +584,8 @@ results, not independence. We formalize such conditional results too:
 internal refutations of the principles in question from hypotheses
 abstracted from the countermodels.
 
-The nLab problems:
+The nLab problems treated here. The ordinary sheaf countermodel for
+questions 2 and 3 was verified in unpublished Lean.
 
  1. Assuming Axiom R♭, is the shape of every subset of ℝ a set? No:
     it fails in Shulman's intended model [1, Theorem 5.3], by a
@@ -696,9 +697,7 @@ The nLab problems:
     (gist.RealCohesion.RationalDetection; FlatSplit states it from
     Axiom R♭ alone).
 
-The remaining two nLab problems in that list, on the ∞-topos meaning
-of Axiom R♭ and on a formulation in multimodal type theory, are not
-treated.
+The two questions about tight apartness are treated in gist.CohesiveApartness.
 
 Follow-up questions [1, §6]:
 
@@ -706,7 +705,7 @@ Follow-up questions [1, §6]:
    value and Brouwer fixed-point theorems hold for non-crisp functions
    assuming only Axiom R♭ (and univalence)? For the intermediate value
    theorem, yes, and this is formalized; see nLab problem 4. For the
-   Brouwer fixed-point theorem it is open [1, §6]. For a pointed type,
+   Brouwer fixed-point theorem we give a counterexample in separate work. For a pointed type,
    overt connectedness is equivalent to the nullness of all the sets
    𝟚-mod P, obtained from 𝟚 by identifying ₀ and ₁ when P holds, and
    ℝ-nullness of all of them gives the non-crisp intermediate value
@@ -726,7 +725,7 @@ Follow-up questions [1, §6]:
      Grothendieck topos: its comparison Π (A^ℕ) → (Π A)^ℕ is not
      injective, Axiom R♭, crisp excluded middle and sharp choice hold
      in it, and so do set-level readings of the two principles
-     described next. The ∞-topos is not formalized.
+     described next. Verified in unpublished Lean. The higher result has a paper proof.
    - Conditional internal refutation, formalized. The notes isolate
      two principles that hold in the countermodel: the finite-height
      principle and a tower of unbounded depth. From these and
@@ -752,10 +751,10 @@ Follow-up questions [1, §6]:
      (gist.RealCohesion.ShapeProducts). Supplied contractions are much
      stronger than the mere agreement of zero-shapes in the tower.
 
- * Shulman's rejected form of choice. It holds in every local topos
-   whose base satisfies the axiom of choice [1, §6]. Whether it
-   follows internally from Axiom AC is open. Not formalized in Agda;
-   the Lean libraries [6] check it in their two ordinary models.
+ * Shulman's stronger choice formula (3.2) holds in every ordinary local
+   topos whose base satisfies choice [1, §6]. In the (2,1)-category of
+   groupoid-valued stacks, (3.2) fails at Bℝ while sharp choice (3.3)
+   holds for every 0-truncated index map. Verified in unpublished Lean.
 
 The two further questions that Shulman raises in passing, on the
 functions ℝⁿ → ℝ and on removing crispness from the approximate

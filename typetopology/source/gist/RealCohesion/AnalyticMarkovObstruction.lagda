@@ -18,7 +18,7 @@ excluded middle and Axioms R♭ and AC [1, Theorem 2.5(i)], and neither
 is the full fan theorem [1, Theorem 2.5(ii)]. Here we prove, constructively,
 that two kinds of data refute these principles. Both kinds of data
 are realized in the pointless-end countermodel, as explained at the
-end of this file. This is not formalized.
+end of this file. The ordinary sheaf instance was verified in unpublished Lean.
 
 1. A dense positive family: a type X and a map t : X → ℝ such that
 

@@ -1,11 +1,12 @@
 # Cohesion
 
 This repository contains Agda formalizations in cohesive type theory and
-Lean formalizations about geometric morphisms of toposes.
+Lean formalizations of geometric morphisms and sheaf models.
 
 - [Lawvere–Menni precohesion problem](#lawveremenni-precohesion-problem)
 - [Six nLab open problems and their resolutions](docs/shulman.md#the-nlab-open-problems)
 - [Questions raised by Shulman](docs/shulman.md#questions-raised-by-shulman)
+- [Lean counterexamples and available proof code](lean/README.md#countermodels)
 - [Weakened and corrected statements](#weakened-and-corrected-statements)
 - [Orbifolds, the revised theorem and its axioms](orbifolds/README.md)
 - [Source credits and licenses](docs/sources.md)
@@ -22,9 +23,7 @@ failure of local connectedness. [Lawvere and Menni, §10, p. 930](https://www.ku
 **Is every cohesive geometric morphism between elementary toposes locally
 connected? Yes.** Cohesion adds Lawvere's Continuity axiom to pre-cohesion.
 Under that axiom, the morphism also has an open restriction of quality type and a
-complementary closed restriction with Boolean base. Both the negative and
-positive results were checked in Lean. The [Lean guide](lean/README.md)
-specifies which proofs are included in this distribution. [Lawvere–Menni problem, proofs and related weakenings](docs/lawvere-menni.md)
+complementary closed restriction with Boolean base. Verified in unpublished Lean. [Lawvere–Menni problem, proofs and related weakenings](docs/lawvere-menni.md)
 
 ## Our results on Shulman’s *Brouwer’s fixed-point theorem in real-cohesive homotopy type theory*
 
@@ -43,16 +42,17 @@ of the ball sharply has a fixed point. For a crisp endomap
 there merely exists a fixed point in the ordinary mode. The proofs
 dispense with Axiom T and univalence. [Sharp and crisp fixed points](docs/shulman.md#the-two-classical-brouwer-fixed-point-theorems)
 
-Under real cohesion and crisp excluded middle, we show that the functions on
-points induced by crisp maps $\mathbb R^n\to\mathbb R$ are exactly the
-$\varepsilon$–$\delta$ continuous functions, for every crisp finite dimension
-$n$ (§11). In Shulman’s intended model we exhibit a subset of the reals whose
-shape has fundamental group surjecting onto $\mathbb Z$. We give a
-real-cohesive model with crisp excluded middle in which analytic Markov’s
-principle fails (§8.3), and one with sharp choice in which Lawvere’s
-Continuity axiom fails (§10). At the chart
-$B\mathbb R$ in a model of sharp choice, we show that Shulman’s stronger
-choice formula (3.2) fails. [Questions and resolutions](docs/shulman.md#questions-raised-by-shulman) · [Weakened and corrected statements](docs/shulman.md#weakened-and-corrected-statements)
+Under real cohesion and crisp excluded middle, the functions on points induced
+by crisp maps $\mathbb R^n\to\mathbb R$ are exactly the ε–δ continuous
+functions, for every crisp finite dimension $n$ (§11). In Shulman’s intended
+model we exhibit a subset of the reals whose shape has fundamental group
+surjecting onto $\mathbb Z$. We also construct two ordinary sheaf models of
+real cohesion with crisp excluded middle and sharp choice. Analytic Markov’s
+principle and Axiom T fail in one (§8.3), and Lawvere’s Continuity axiom
+fails in the other (§10). In groupoid-valued stacks, the stronger choice
+formula (3.2) fails at $B\mathbb R$ while sharp choice (3.3) holds.
+The ordinary sheaf countermodels and the stack calculation were verified in
+unpublished Lean. [Questions and resolutions](docs/shulman.md#questions-raised-by-shulman) · [Weakened and corrected statements](docs/shulman.md#weakened-and-corrected-statements)
 
 ## Our results on Myers’s *Orbifolds as microlinear types in synthetic differential cohesive homotopy type theory*
 
