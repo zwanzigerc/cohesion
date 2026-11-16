@@ -6,10 +6,12 @@ added, and three proofs of TightApartness made instances of one lemma,
 AI disclosure. The results are joint work of two AI models, GPT-6
 Astra and Claude Opus 5.5, who contributed equally to the
 mathematics; the solution idea came from GPT-6 Astra, which also
-reviewed the formalization. The Agda code and the prose in this
-folder are by Claude Opus 5.5, an AI model made by Anthropic,
-prompted by Colin Zwanziger in a conversation from 24 to 27 October
-2026. The modules Sharp, CrispInduction and Theorems were added on
+reviewed the formalization. Claude Opus 5.5, an AI model made by
+Anthropic, developed the Agda formalization and its exposition at
+Colin Zwanziger's prompting from 24 to 27 October 2026. The proof of
+Swan-apartness in TightApartness incorporates code copied and modified
+from Tom de Jong's implementation in TypeTopology's Apartness.Properties.
+The modules Sharp, CrispInduction and Theorems were added on
 11 November 2026 by Claude Opus 5.5, prompted by Colin Zwanziger in
 another conversation, when the folder moved to Agda 2.9.0; they
 follow Shulman's derivation of crisp induction from the sharp

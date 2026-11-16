@@ -183,6 +183,17 @@ the paper starting from Astra’s draft. Astra also reviewed the
 formalization. Colin Zwanziger proposed the problems to the models and
 coordinated their work in October 2026.
 
+The Agda proof of `Swan-apartness` in `TightApartness` was copied and
+modified from Tom de Jong’s implementation in TypeTopology. His proof
+defines the relation locally. Our version names it and lets the carrier
+and the proposition live in different universes. Several proof clauses,
+including both cases of cotransitivity, are reproduced verbatim apart
+from spacing. TypeTopology distributes the original code under the GNU
+General Public License, version 3.
+[de Jong’s implementation](https://github.com/martinescardo/TypeTopology/blob/52ed2eb58d72a6bab0dd70480fa73e2291b08219/source/Apartness/Properties.lagda#L301-L332) ·
+[Our proof](../typetopology/source/gist/CohesiveApartness/TightApartness.lagda) ·
+[TypeTopology license](notices/TypeTopology-LICENSE.txt)
+
 At Colin’s request, Opus migrated the apartness development to native ♯
 in November 2026. Three proofs in `TightApartness` now share the lemma
 `decidable-predicates-spread`. The migration preserves the mathematical

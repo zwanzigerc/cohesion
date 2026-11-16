@@ -215,8 +215,20 @@ The construction from Apartness.Properties. On a discrete type X (in
 the sense of decidable equality), given a proposition P, the relation
 x ♯ y := P × (x ≠ y) is an apartness, and it is tight if ¬¬ P holds.
 Apart points exist only if P holds. The construction is due to Tom de
-Jong, following a generalization of an idea of Andrew Swan [4]; we
-name it after Swan's idea.
+Jong, following a generalization of an idea of Andrew Swan [4].
+
+The Agda proof below was copied and modified from Tom de Jong's
+implementation in TypeTopology's Apartness.Properties (5 February 2025).
+In our version (25 October 2026) the local construction is named
+Swan-apartness and X and P may live in different universes. Several
+proof clauses, including both cases of cotransitivity, are reproduced
+verbatim apart from spacing. TypeTopology distributes the original
+code under the GNU General Public License, version 3.
+
+Original proof:
+https://github.com/martinescardo/TypeTopology/blob/52ed2eb58d72a6bab0dd70480fa73e2291b08219/source/Apartness/Properties.lagda#L301-L332
+Upstream license:
+https://github.com/martinescardo/TypeTopology/blob/52ed2eb58d72a6bab0dd70480fa73e2291b08219/LICENSE
 
 \begin{code}
 
