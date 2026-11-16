@@ -10,7 +10,7 @@ Lean formalizations about geometric morphisms of toposes.
 - [Orbifolds, the revised theorem and its axioms](orbifolds/README.md)
 - [Source credits and licenses](docs/sources.md)
 
-## Lawvere–Menni on pre-cohesion and local connectedness
+## Lawvere–Menni precohesion problem
 
 **Is every precohesive geometric morphism locally connected? No.**
 Lawvere and Menni raised this question immediately after Corollary 10.4.
