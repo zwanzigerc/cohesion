@@ -52,7 +52,10 @@ principle and Axiom T fail in one (§8.3), and Lawvere’s Continuity axiom
 fails in the other (§10). In groupoid-valued stacks, the stronger choice
 formula (3.2) fails at $B\mathbb R$ while sharp choice (3.3) holds.
 The ordinary sheaf countermodels and the stack calculation were verified in
-unpublished Lean. [Questions and resolutions](docs/shulman.md#questions-raised-by-shulman) · [Weakened and corrected statements](docs/shulman.md#weakened-and-corrected-statements)
+unpublished Lean. Shulman’s questions about the shape of subsets of the reals,
+analytic Markov’s principle, and removing crispness from the approximate IVT
+are [three of the six nLab open problems we resolve](docs/shulman.md#the-nlab-open-problems).
+[Questions and resolutions](docs/shulman.md#questions-raised-by-shulman) · [Weakened and corrected statements](docs/shulman.md#weakened-and-corrected-statements)
 
 ## Our results on Myers’s *Orbifolds as microlinear types in synthetic differential cohesive homotopy type theory*
 
