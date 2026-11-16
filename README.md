@@ -12,18 +12,16 @@ Lean formalizations about geometric morphisms of toposes.
 
 ## Lawvere–Menni on pre-cohesion and local connectedness
 
-**Does every pre-cohesive geometric morphism remain pre-cohesive on slicing? No.**
+**Is every precohesive geometric morphism locally connected? No.**
 Lawvere and Menni raised this question immediately after Corollary 10.4.
-For a pre-cohesive morphism the condition is equivalent to local
-connectedness. Our counterexample is a morphism between presheaf toposes
+Our counterexample is a morphism between presheaf toposes
 built from abelianization on finite products of $S_3$, $C_2$ and $C_3$.
 The pullback square defining the kernel of the sign map witnesses the
 failure of local connectedness. [Lawvere and Menni, §10, p. 930](https://www.kurims.kyoto-u.ac.jp/EMIS/journals/TAC/volumes/30/26/30-26.pdf#page=22) · [Lean counterexample](lean/Counterexample/Main.lean)
 
 **Is every cohesive geometric morphism between elementary toposes locally
 connected? Yes.** Cohesion adds Lawvere's Continuity axiom to pre-cohesion.
-Under that axiom, the morphism is locally connected and hence stably
-pre-cohesive. It also has an open restriction of quality type and a
+Under that axiom, the morphism also has an open restriction of quality type and a
 complementary closed restriction with Boolean base. Both the negative and
 positive results were checked in Lean. The [Lean guide](lean/README.md)
 specifies which proofs are included in this distribution. [Lawvere–Menni problem, proofs and related weakenings](docs/lawvere-menni.md)

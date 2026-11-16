@@ -1,10 +1,12 @@
 # Lawvere and Menni: when is a pre-cohesive morphism locally connected?
 
-**Pre-cohesion: no.** Lawvere and Menni ask after [§10, Corollary 10.4](https://www.tac.mta.ca/tac/volumes/30/26/30-26.pdf#page=22) whether every pre-cohesive geometric morphism is stably pre-cohesive. By that corollary, this is equivalent to asking whether every such morphism is locally connected. We construct a pre-cohesive morphism of presheaf toposes that is not locally connected.
+**Is every precohesive geometric morphism locally connected? No.** Lawvere and Menni raise the question immediately after Corollary 10.4. Our counterexample is a precohesive morphism between presheaf toposes that fails local connectedness. [Lawvere and Menni, §10, p. 930](https://www.tac.mta.ca/tac/volumes/30/26/30-26.pdf#page=22)
 
-**Cohesion: yes.** Every cohesive geometric morphism between elementary toposes is locally connected, hence stably pre-cohesive. Here *cohesive* means pre-cohesive with Lawvere's Continuity axiom. We do not assume choice, a natural numbers object, or sufficient cohesion. These are theorems about ordinary elementary toposes; an internal Agda development concerning higher types has a different scope, described [separately](../agda/precohesion/README.md).
+**Is every cohesive geometric morphism between elementary toposes locally connected? Yes.** Here *cohesive* means pre-cohesive with Lawvere's Continuity axiom. We do not assume choice, a natural numbers object, or sufficient cohesion. These are theorems about ordinary elementary toposes; an internal Agda development concerning higher types has a different scope, described [separately](../agda/precohesion/README.md).
 
 ## Where pre-cohesion fails
+
+Lawvere and Menni’s Corollary 10.4 identifies local connectedness of a precohesive geometric morphism with stability of pre-cohesion under slicing.
 
 Write the adjoints as Π ⊣ Δ ⊣ Γ ⊣ ∇: Π takes pieces, Δ makes objects discrete, Γ takes points, and ∇ makes objects codiscrete. In a pre-cohesive morphism, Δ and ∇ are fully faithful, Π preserves finite products, and the canonical points-to-pieces map ΓX → ΠX is epic. Local connectedness asks for more: for every X → ΔB and A → B, the canonical map from Π(X ×<sub>ΔB</sub> ΔA) to ΠX ×<sub>B</sub> A must be an isomorphism.
 
