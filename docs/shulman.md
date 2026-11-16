@@ -101,5 +101,5 @@ The same distinctions about crisp variables affect several statements about the 
 | Place in Myers | Correction or scope |
 | --- | --- |
 | Lemma 4.9(3) and Theorem 4.10 | The component argument needs decidable equality of the set of shape components $\int_0 X$. This holds, in particular, for crisp $X$. Corollary 9.14 retains its stated conclusion because the orbits of a permutation of a finite set have decidable equality. |
-| Remark 6.5 | For the Dedekind reals the step from $r\ne0$ to positive apartness $r\mathrel{\#}0$ is analytic Markov. Its failure in an ordinary sheaf model of LEM, $R♭$ and sharp choice was verified in unpublished Lean. |
+| Remark 6.5 | For the Dedekind reals the step from $r\ne0$ to positive apartness *r* # 0 is analytic Markov. Its failure in an ordinary sheaf model of LEM, $R♭$ and sharp choice was verified in unpublished Lean. |
 | Theorem 8.6 | Keep the printed crispness assumption on $X$. For an ordinary variable, the comparison with the separated reflection can fail already at $n=0$. In other models the relative shape of an $n$-connected ordinary type need not be $n$-connected for each $n\geq1$. The models satisfy LEM and $R♭$ and refute T. |
