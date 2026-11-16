@@ -704,9 +704,10 @@ Follow-up questions [1, §6]:
  * Crispness under Shulman's axioms. Do the approximate intermediate
    value and Brouwer fixed-point theorems hold for non-crisp functions
    assuming only Axiom R♭ (and univalence)? For the intermediate value
-   theorem, yes, and this is formalized; see nLab problem 4. For the
-   Brouwer fixed-point theorem we give a counterexample in separate work. For a pointed type,
-   overt connectedness is equivalent to the nullness of all the sets
+   theorem, yes, and this is formalized; see nLab problem 4.
+   Shulman’s approximate fixed-point theorem for the disc (Theorem 12.6)
+   does not extend from crisp to arbitrary endomaps (in preparation).
+   For a pointed type, overt connectedness is equivalent to the nullness of all the sets
    𝟚-mod P, obtained from 𝟚 by identifying ₀ and ₁ when P holds, and
    ℝ-nullness of all of them gives the non-crisp intermediate value
    theorem (gist.RealCohesion.OvertConnectedness). The proof from
