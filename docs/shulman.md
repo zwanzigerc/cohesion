@@ -21,13 +21,15 @@ A further version permits an ordinary family of C1 generators. Its extra assumpt
 
 ## The nLab open problems
 
-We resolve six questions from the nLab’s *Open problems in homotopy type theory*. We give the nLab authors’ wording for each question. The two on tight apartness were posed by Anonymouse and are quoted from revision 33. [nLab, *Open problems in homotopy type theory*, “In cohesive homotopy type theory”](https://ncatlab.org/nlab/show/open+problems+in+homotopy+type+theory#InCohesiveHomotopyTypeTheory) · [nLab attribution and reuse policy](https://ncatlab.org/nlab/show/HomePage)
+We resolve six questions from the nLab’s *Open problems in homotopy type theory*. Shulman raised the questions about the shape of subsets of the reals, analytic Markov’s principle, and the approximate intermediate value theorem in his paper. Anonymouse posed the question about the full fan theorem and the two about tight apartness. We quote the nLab’s wording, using revision 33 for the apartness questions. [Shulman, §§8.3 and 11](https://arxiv.org/abs/1509.07584v3) · [nLab problem list](https://ncatlab.org/nlab/show/open+problems+in+homotopy+type+theory#InCohesiveHomotopyTypeTheory) · [nLab revision 33](https://ncatlab.org/nlab/revision/open+problems+in+homotopy+type+theory/33#InCohesiveHomotopyTypeTheory) · [nLab attribution and reuse policy](https://ncatlab.org/nlab/show/HomePage)
 
 ### 1. Shape of subsets of the reals
 
 > Assuming the axiom of real cohesion, is the shape of every subset of the Dedekind real numbers a set?
 
-**No.** In the intended higher sheaf model, a continuous real function has an image whose shape has fundamental group surjecting onto $\mathbb Z$. Shulman raises the conjecture in §11 immediately after Theorem 11.3. The paper argument establishes the result in the model. The Agda proof uses a dyadic example and a mod-two obstruction, with explicit assumptions of real-path descent for Boolean families and modality of the type of two-element types. [Agda counterexample and hypotheses](../typetopology/source/gist/RealCohesion/RealSubsetShape.lagda) · [Agda theorem discharging the continuity hypothesis](../typetopology/source/gist/RealCohesion/Theorems.lagda)
+**No.** In Shulman’s intended higher sheaf model, the image of a continuous real function has a shape whose fundamental group surjects onto $\mathbb Z$. This gives a counterexample to the conjecture he raises in §11 immediately after Theorem 11.3.
+
+Agda also checks a conditional internal refutation. It constructs a specific crisp subset of the Dedekind reals, the image of a dyadic function, and proves that its shape is not a set using a mod-two obstruction. In addition to real cohesion and crisp excluded middle, the proof assumes unique Boolean real-path descent and that the type of two-element types is modal. The paper explains why these two principles hold in the intended model. [Agda construction and hypotheses](../typetopology/source/gist/RealCohesion/RealSubsetShape.lagda#L20) · [Checked theorem](../typetopology/source/gist/RealCohesion/Theorems.lagda#L313)
 
 ### 2. Analytic Markov's principle
 
@@ -39,7 +41,7 @@ We resolve six questions from the nLab’s *Open problems in homotopy type theor
 
 > Assuming the axiom of real cohesion and crisp excluded middle, does the full fan theorem hold cohesively? (i.e. is Cantor space a spatial locale?)
 
-**No.** The same pointless-end model has a bar on the binary tree that meets every branch but has no uniform bound on any covering family. The full fan theorem holds in the intended model. The ordinary countermodel is checked in Lean, and Agda also proves the implication from the explicit bar hypotheses. This is an nLab question. Shulman does not pose it in his paper. [Agda bar obstruction](../typetopology/source/gist/RealCohesion/BinaryBarObstruction.lagda)
+**No.** The same pointless-end model has a bar on the binary tree that meets every branch but has no uniform bound on any covering family. The full fan theorem holds in the intended model. The ordinary countermodel is checked in Lean, and Agda also proves the implication from the explicit bar hypotheses. Anonymouse added the question in nLab revision 33. [nLab revision introducing the question](https://ncatlab.org/nlab/revision/diff/open+problems+in+homotopy+type+theory/33) · [Agda bar obstruction](../typetopology/source/gist/RealCohesion/BinaryBarObstruction.lagda)
 
 ### 4. The approximate intermediate value theorem
 
