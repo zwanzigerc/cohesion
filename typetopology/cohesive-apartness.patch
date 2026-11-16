@@ -1,12 +1,24 @@
+Cohesive apartness for TypeTopology
+
+This patch and the seven Agda modules it adds are licensed under the GNU
+General Public License, version 3. The full license is in the LICENSE
+file at the root of the TypeTopology checkout.
+SPDX-License-Identifier: GPL-3.0-only
+
+Apply with git apply to TypeTopology revision 52ed2eb58d72a6bab0dd70480fa73e2291b08219.
+
 diff --git a/source/gist/CohesiveApartness/CrispInduction.lagda b/source/gist/CohesiveApartness/CrispInduction.lagda
 new file mode 100644
-index 00000000..eb906f9a
+index 00000000..74935430
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/CrispInduction.lagda
-@@ -0,0 +1,171 @@
+@@ -0,0 +1,198 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 11 November 2026. See the AI disclosure in
 +gist.CohesiveApartness.index.
++
++This module is licensed under the GNU General Public License, version 3.
++SPDX-License-Identifier: GPL-3.0-only
 +
 +Consequences of crisp induction, from the native ♯, in --safe mode.
 +
@@ -175,15 +187,42 @@ index 00000000..eb906f9a
 +  section (a ^♭) = refl
 +
 +\end{code}
++
++The map ℕ → ♭ ℕ and its section proof are adapted from agda-unimath.
++The following notice accompanies that code.
++
++MIT License
++
++Copyright (c) 2022 Egbert Maarten Rijke
++
++Permission is hereby granted, free of charge, to any person obtaining a copy of
++this software and associated documentation files (the "Software"), to deal in
++the Software without restriction, including without limitation the rights to
++use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
++the Software, and to permit persons to whom the Software is furnished to do so,
++subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
++FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
++COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
++IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
++CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 diff --git a/source/gist/CohesiveApartness/Flat.lagda b/source/gist/CohesiveApartness/Flat.lagda
 new file mode 100644
-index 00000000..94f54f45
+index 00000000..d68ac07c
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/Flat.lagda
-@@ -0,0 +1,267 @@
+@@ -0,0 +1,270 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 25 October 2026. See the AI disclosure in
 +gist.CohesiveApartness.index.
++
++This module is licensed under the GNU General Public License, version 3.
++SPDX-License-Identifier: GPL-3.0-only
 +
 +The flat modality ♭ of spatial type theory [1], as provided by Agda's
 +--cohesion flag, together with the few notions about it that we need
@@ -450,13 +489,16 @@ index 00000000..94f54f45
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/FlatSplit.lagda b/source/gist/CohesiveApartness/FlatSplit.lagda
 new file mode 100644
-index 00000000..310a7bbe
+index 00000000..d9eddb0d
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/FlatSplit.lagda
-@@ -0,0 +1,269 @@
+@@ -0,0 +1,272 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 25 October 2026. See the AI disclosure in
 +gist.CohesiveApartness.index.
++
++This module is licensed under the GNU General Public License, version 3.
++SPDX-License-Identifier: GPL-3.0-only
 +
 +𝟚 is ♭-discrete, by crisp case analysis, and the main theorems of
 +gist.CohesiveApartness.TightApartness without that hypothesis.
@@ -725,13 +767,16 @@ index 00000000..310a7bbe
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/Sharp.lagda b/source/gist/CohesiveApartness/Sharp.lagda
 new file mode 100644
-index 00000000..56cf8983
+index 00000000..51b91078
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/Sharp.lagda
-@@ -0,0 +1,84 @@
+@@ -0,0 +1,141 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 11 November 2026. See the AI disclosure in
 +gist.CohesiveApartness.index.
++
++This module is licensed under the GNU General Public License, version 3.
++SPDX-License-Identifier: GPL-3.0-only
 +
 +The sharp modality ♯, natively.
 +
@@ -813,15 +858,72 @@ index 00000000..56cf8983
 +♯-map f a .ε♯ = f (a .ε♯)
 +
 +\end{code}
++
++The sharp record follows the example in the Agda manual.
++The following notice accompanies that example.
++
++Copyright (c) 2005-2026 remains with the authors.
++Agda 2 was originally written by Ulf Norell,
++partially based on code from Agda 1 by Catarina Coquand and Makoto Takeyama,
++and from Agdalight by Ulf Norell and Andreas Abel.
++Cubical Agda was originally contributed by Andrea Vezzosi.
++
++Agda 2 is currently actively developed mainly by Andreas Abel,
++Nathaniel Burke, Lawrence Chonavel, Jesper Cockx,
++Nils Anders Danielsson, and András Kovács.
++
++Further, Agda 2 has received contributions by, amongst others,
++Arthur Adjedj, Guillaume Allais, Malin Altenmüller, Stevan Andjelkovic,
++Marcin Benke, Jean-Philippe Bernardy, Guillaume Brunerie,
++James Chapman, Liang-Ting Chen, Joris Ceulemans, Jonathan Coates,
++Matthew Daggitt, Dominique Devriese, Marko Dimjašević, Péter Diviánszky,
++Lucas Escot, Robert Estelle,
++Naïm Camille Favier, Kuen-Bang Hou (Favonia), Olle Fredriksson,
++Paolo G. Giarrusso, Adam Gundry, Daniel Gustafsson,
++Philipp Hausmann, Alex Haršáni,
++Patrik Jansson, Alan Jeffrey, Phil de Joux,
++Wolfram Kahl, Philip Kaludercic, Andre Knispel, Wen Kokke,
++John Leo, Amélia Liao, Ziyang Liu, Fredrik Lindblad, Víctor López Juan, Ting-Gan Lua,
++Francesco Mazzoli, Stefan Monnier, Guilhem Moulin, Reed Mullanix,
++Konstantin Nisht, Fredrik Nordvall Forsberg, Ulf Norell, Andreas Nuyts,
++Herminie Pagel, Josselin Poiret, Nicolas Pouillard, Jonathan Prieto,
++Christian Sattler, Artem Shinkarov, Michael Shulman, Andrés Sicard-Ramírez, Nate Soares,
++Makoto Takeyama, Andrea Vezzosi, Szumi Xie, Nobuo Yamashita,
++Noam Zeilberger, and Tesla Ice Zhang.
++The full list of contributors is available at
++https://github.com/agda/agda/graphs/contributors or from the git
++repository via ``git shortlog -sne``.
++
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of this software and associated documentation files (the
++"Software"), to deal in the Software without restriction, including
++without limitation the rights to use, copy, modify, merge, publish,
++distribute, sublicense, and/or sell copies of the Software, and to
++permit persons to whom the Software is furnished to do so, subject to
++the following conditions:
++
++The above copyright notice and this permission notice shall be
++included in all copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
++CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
++SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 diff --git a/source/gist/CohesiveApartness/Theorems.lagda b/source/gist/CohesiveApartness/Theorems.lagda
 new file mode 100644
-index 00000000..af838252
+index 00000000..e4b8bfb8
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/Theorems.lagda
-@@ -0,0 +1,234 @@
+@@ -0,0 +1,237 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 11 November 2026, from gist.CohesiveApartness.FlatSplit of
 +25 October 2026. See the AI disclosure in gist.CohesiveApartness.index.
++
++This module is licensed under the GNU General Public License, version 3.
++SPDX-License-Identifier: GPL-3.0-only
 +
 +The main theorems of gist.CohesiveApartness.TightApartness without the
 +hypothesis that 𝟚 is ♭-discrete, in --safe mode.
@@ -1055,13 +1157,16 @@ index 00000000..af838252
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/TightApartness.lagda b/source/gist/CohesiveApartness/TightApartness.lagda
 new file mode 100644
-index 00000000..e9e071f7
+index 00000000..0d32ccec
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/TightApartness.lagda
-@@ -0,0 +1,882 @@
+@@ -0,0 +1,885 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 25 October 2026; three proofs made instances of one lemma,
 +11 November 2026. See the AI disclosure in gist.CohesiveApartness.index.
++
++This module is licensed under the GNU General Public License, version 3.
++SPDX-License-Identifier: GPL-3.0-only
 +
 +We discuss two problems that were listed as open in the section "In
 +cohesive homotopy type theory" of the nLab page [1]. On 24 October
@@ -1943,14 +2048,17 @@ index 00000000..e9e071f7
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/index.lagda b/source/gist/CohesiveApartness/index.lagda
 new file mode 100644
-index 00000000..1d40b9fd
+index 00000000..da9f7b35
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/index.lagda
-@@ -0,0 +1,105 @@
+@@ -0,0 +1,107 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 25 October 2026; the modules for the native ♯ of Agda 2.9.0
 +added, and three proofs of TightApartness made instances of one lemma,
 +11 November 2026.
++
++This module is licensed under the GNU General Public License, version 3.
++SPDX-License-Identifier: GPL-3.0-only
 +
 +AI disclosure. The results are joint work of two AI models, GPT-6
 +Astra and Claude Opus 5.5, who contributed equally to the
@@ -1971,12 +2079,11 @@ index 00000000..1d40b9fd
 +TypeTopology commit 52ed2eb of 24 October 2026. Flat, TightApartness
 +and FlatSplit, which don't need the native ♯, were also checked with
 +Agda 2.8.0, TightApartness again after that change. TypeTopology's
-+AI-Policy.md says that AI generated Agda code or prose will not be
-+considered. This folder is therefore offered for discussion only,
-+unless the maintainers decide otherwise. A paper presenting the
-+results is in the repository
++AI-Policy.md excludes submissions of AI-generated Agda code or prose.
++The cohesion repository contains these modules and the accompanying
++paper.
 +
-+ https://github.com/zwanzigerc/cohesive-apartness
++ https://github.com/zwanzigerc/cohesion
 +
 +This folder studies two problems about tight apartness relations in
 +the presence of the flat modality ♭, formerly listed as open problems

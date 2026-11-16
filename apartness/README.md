@@ -168,9 +168,14 @@ agda source/gist/CohesiveApartness/index.lagda
 agda source/gist/CohesiveApartness/FlatSplit.lagda
 ```
 
-The seven literate Agda modules are also available as one
-[patch against TypeTopology](../typetopology/cohesive-apartness.patch).
-They are maintained here. The pinned TypeTopology library sets
+The [patch](../typetopology/cohesive-apartness.patch) adds the same seven
+literate Agda modules to a local copy of TypeTopology. To use it in place
+of the `cp -R` step, run `git -C tt apply ../typetopology/cohesive-apartness.patch`
+from the root of this repository after checking out the revision above.
+
+The seven modules and the patch are licensed under the
+[GNU General Public License, version 3](notices/TypeTopology-LICENSE.txt).
+The modules are maintained here. The pinned TypeTopology library sets
 `--no-cohesion`, and its AI policy excludes submissions of AI-generated
 code and prose. [TypeTopology’s policy at the pinned revision](https://github.com/martinescardo/TypeTopology/blob/52ed2eb58d72a6bab0dd70480fa73e2291b08219/AI-Policy.md)
 

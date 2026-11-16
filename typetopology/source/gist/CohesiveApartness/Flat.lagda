@@ -2,6 +2,9 @@ Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 Zwanziger, 25 October 2026. See the AI disclosure in
 gist.CohesiveApartness.index.
 
+This module is licensed under the GNU General Public License, version 3.
+SPDX-License-Identifier: GPL-3.0-only
+
 The flat modality ♭ of spatial type theory [1], as provided by Agda's
 --cohesion flag, together with the few notions about it that we need
 in this folder: discrete types, crisp excluded middle, null types,
