@@ -1,19 +1,196 @@
+diff --git a/source/gist/CohesiveApartness/CrispInduction.lagda b/source/gist/CohesiveApartness/CrispInduction.lagda
+new file mode 100644
+index 00000000..eb906f9a
+--- /dev/null
++++ b/source/gist/CohesiveApartness/CrispInduction.lagda
+@@ -0,0 +1,171 @@
++Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
++Zwanziger, 11 November 2026. See the AI disclosure in
++gist.CohesiveApartness.index.
++
++Consequences of crisp induction, from the native ♯, in --safe mode.
++
++We derive four consequences of Shulman's crisp induction principles
++[1, §5]:
++
++ * the constructor of ♭ respects crisp identifications, the decoding
++   half of Shulman's characterization of the identity types of ♭ A
++   [1, Theorem 6.1];
++
++ * 𝟚 is ♭-discrete [1, Theorems 6.19 and 6.21];
++
++ * ℕ is ♭-discrete;
++
++ * ♭ A is ♭-discrete for every crisp type A [1, §6.2].
++
++This folder uses the second: that 𝟚 is ♭-discrete. The other three
++follow by the same method and are recorded for use elsewhere.
++
++Agda 2.8 has no ♯, so these facts have to be proved there by pattern
++matching on crisp variables, with --flat-split, which Agda does not
++allow together with --safe and --without-K; that is how
++gist.CohesiveApartness.FlatSplit proves the ♭-discreteness of 𝟚.
++Shulman proves crisp induction from ♯ instead [1, §5], and with the
++native ♯ of Agda 2.9.0 (gist.CohesiveApartness.Sharp) his method
++works in --safe mode.
++
++The method, for crisp-ap-^♭: if x, y and p : x ＝ y are crisp, the
++family z ↦ ♯ (x ^♭ ＝ z ^♭) is well formed, because in a type ♯ B
++every variable counts as crisp. Transporting the unit of refl along p
++gives an element of ♯ (x ^♭ ＝ y ^♭) that is a crisp term, and
++eliminating ♯ from it gives x ^♭ ＝ y ^♭.
++
++For 𝟚, ℕ and ♭ A, let s be the section of the counit defined by
++ordinary induction, and s' the map to ♯ (♭ A) that sends a to a ^♭,
++which is defined by copattern matching because a counts as crisp
++there. Ordinary induction shows that the unit of ♯ agrees with s'
++after s. For crisp a, transporting along this identification in the
++family w ↦ ♯ (s a ＝ w .ε♯) and eliminating ♯ gives s a ＝ a ^♭.
++
++[1] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
++    homotopy type theory. Mathematical Structures in Computer
++    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
++    Numbering as in version 3 of the arXiv preprint.
++
++\begin{code}
++
++{-# OPTIONS --safe --without-K --cohesion #-}
++
++module gist.CohesiveApartness.CrispInduction where
++
++open import MLTT.Spartan
++open import UF.Base
++open import UF.Equiv
++open import gist.CohesiveApartness.Flat
++open import gist.CohesiveApartness.Sharp
++
++\end{code}
++
++The constructor of ♭ respects crisp identifications.
++
++\begin{code}
++
++crisp-ap-^♭ : {@♭ 𝓤 : Universe} {@♭ A : 𝓤 ̇ } {@♭ x y : A}
++            → @♭ x ＝ y → x ^♭ ＝ y ^♭
++crisp-ap-^♭ {𝓤} {A} {x} {y} p =
++ crisp-elim-sharp (transport (λ z → ♯ (x ^♭ ＝ z ^♭)) p (unit-sharp refl))
++
++\end{code}
++
++𝟚 is ♭-discrete.
++
++\begin{code}
++
++𝟚-is-♭-discrete : is-♭-discrete 𝟚
++𝟚-is-♭-discrete = qinvs-are-equivs ♭-counit (s , retraction , section)
++ where
++  s : 𝟚 → ♭ 𝟚
++  s ₀ = ₀ ^♭
++  s ₁ = ₁ ^♭
++
++  s' : 𝟚 → ♯ (♭ 𝟚)
++  s' b .ε♯ = b ^♭
++
++  agreement : (b : 𝟚) → unit-sharp (s b) ＝ s' b
++  agreement ₀ = refl
++  agreement ₁ = refl
++
++  crisp-retraction : (@♭ b : 𝟚) → s b ＝ b ^♭
++  crisp-retraction b =
++   crisp-elim-sharp
++    (transport (λ w → ♯ (s b ＝ w .ε♯)) (agreement b) (unit-sharp refl))
++
++  retraction : s ∘ ♭-counit ∼ id
++  retraction (b ^♭) = crisp-retraction b
++
++  section : ♭-counit ∘ s ∼ id
++  section ₀ = refl
++  section ₁ = refl
++
++\end{code}
++
++ℕ is ♭-discrete.
++
++\begin{code}
++
++♭-succ : ♭ ℕ → ♭ ℕ
++♭-succ (n ^♭) = succ n ^♭
++
++ℕ-to-♭ℕ : ℕ → ♭ ℕ
++ℕ-to-♭ℕ 0        = 0 ^♭
++ℕ-to-♭ℕ (succ n) = ♭-succ (ℕ-to-♭ℕ n)
++
++ℕ-is-♭-discrete : is-♭-discrete ℕ
++ℕ-is-♭-discrete = qinvs-are-equivs ♭-counit (ℕ-to-♭ℕ , retraction , section)
++ where
++  s' : ℕ → ♯ (♭ ℕ)
++  s' n .ε♯ = n ^♭
++
++  agreement : (n : ℕ) → unit-sharp (ℕ-to-♭ℕ n) ＝ s' n
++  agreement 0        = refl
++  agreement (succ n) = ap (♯-map ♭-succ) (agreement n)
++
++  crisp-retraction : (@♭ n : ℕ) → ℕ-to-♭ℕ n ＝ n ^♭
++  crisp-retraction n =
++   crisp-elim-sharp
++    (transport (λ w → ♯ (ℕ-to-♭ℕ n ＝ w .ε♯)) (agreement n) (unit-sharp refl))
++
++  retraction : ℕ-to-♭ℕ ∘ ♭-counit ∼ id
++  retraction (n ^♭) = crisp-retraction n
++
++  section : ♭-counit ∘ ℕ-to-♭ℕ ∼ id
++  section 0        = refl
++  section (succ n) = γ (ℕ-to-♭ℕ n) (section n)
++   where
++    γ : (x : ♭ ℕ) → ♭-counit x ＝ n → ♭-counit (♭-succ x) ＝ succ n
++    γ (m ^♭) e = ap succ e
++
++\end{code}
++
++♭ A is ♭-discrete.
++
++\begin{code}
++
++♭-is-♭-discrete : {@♭ 𝓤 : Universe} {@♭ A : 𝓤 ̇ } → is-♭-discrete (♭ A)
++♭-is-♭-discrete {𝓤} {A} = qinvs-are-equivs ♭-counit (σ , retraction , section)
++ where
++  σ : ♭ A → ♭ (♭ A)
++  σ (a ^♭) = (a ^♭) ^♭
++
++  σ' : ♭ A → ♯ (♭ (♭ A))
++  σ' v .ε♯ = v ^♭
++
++  agreement : (v : ♭ A) → unit-sharp (σ v) ＝ σ' v
++  agreement (a ^♭) = refl
++
++  crisp-retraction : (@♭ v : ♭ A) → σ v ＝ v ^♭
++  crisp-retraction v =
++   crisp-elim-sharp
++    (transport (λ w → ♯ (σ v ＝ w .ε♯)) (agreement v) (unit-sharp refl))
++
++  retraction : σ ∘ ♭-counit ∼ id
++  retraction (v ^♭) = crisp-retraction v
++
++  section : ♭-counit ∘ σ ∼ id
++  section (a ^♭) = refl
++
++\end{code}
 diff --git a/source/gist/CohesiveApartness/Flat.lagda b/source/gist/CohesiveApartness/Flat.lagda
 new file mode 100644
-index 0000000..256cab7
+index 00000000..94f54f45
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/Flat.lagda
-@@ -0,0 +1,264 @@
+@@ -0,0 +1,267 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 25 October 2026. See the AI disclosure in
 +gist.CohesiveApartness.index.
 +
 +The flat modality ♭ of spatial type theory [1], as provided by Agda's
 +--cohesion flag, together with the few notions about it that we need
-+in gist.CohesiveApartness.TightApartness: discrete types, crisp
-+excluded middle, null types, Shulman's Axioms C0 and C1 [1, §8], and
-+the single-generator variant of Axiom C1 used on the nLab [2], which
-+we call singly generated punctual cohesion.
++in this folder: discrete types, crisp excluded middle, null types,
++Shulman's Axioms C0 and C1 [1, §8], and the single-generator variant
++of Axiom C1 used on the nLab [2], which we call singly generated
++punctual cohesion.
 +
 +A variable annotated with @♭ is crisp. In Shulman's notation [1] a
 +crisp variable x of type A is written x :: A. Only crisp variables
@@ -22,7 +199,8 @@ index 0000000..256cab7
 +
 +[1] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
 +    homotopy type theory. Mathematical Structures in Computer
-+    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584
++    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
++    Numbering as in version 3 of the arXiv preprint.
 +
 +[2] nLab. Axiom of punctual cohesion.
 +    https://ncatlab.org/nlab/show/axiom+of+punctual+cohesion
@@ -63,9 +241,11 @@ index 0000000..256cab7
 +arbitrary, possibly non-crisp, family of types, which is how ♭ is
 +eliminated in [1].
 +
-+We never do case analysis on crisp elements of inductive types (Agda's
-+--flat-split), because --flat-split is not available together with
-+--safe and --without-K.
++This module never does case analysis on crisp elements of inductive
++types, which needs Agda's flag --flat-split, because --flat-split is
++not available together with --safe and --without-K. The one place in
++this folder where we need it is isolated in
++gist.CohesiveApartness.FlatSplit.
 +
 +A crisp type is discrete if the counit is an equivalence [1]. We say
 +"♭-discrete", because in TypeTopology "discrete" means "has decidable
@@ -88,12 +268,13 @@ index 0000000..256cab7
 +
 +\end{code}
 +
-+Under crisp excluded middle, every ♭-discrete crisp set is discrete in
-+the sense of TypeTopology. For crisp u and v, the proposition u ＝ v
-+is crisp, and hence decided by crisp excluded middle. An arbitrary
-+element of a ♭-discrete type is of the form ♭-counit (u ^♭) for a
-+crisp u. Compare [1, Lemma 8.15], which, assuming also axiom C1,
-+characterizes the discrete sets as the sets with decidable equality.
++Under crisp excluded middle, every ♭-discrete crisp set, with a crisp
++proof that it is a set, is discrete in the sense of TypeTopology. For
++crisp u and v, the proposition u ＝ v is crisp, and hence decided by
++crisp excluded middle. An arbitrary element of a ♭-discrete type is
++of the form ♭-counit (u ^♭) for a crisp u. Compare [1, Lemma 8.15],
++which, assuming also Axiom C1, characterizes the discrete sets as the
++sets with decidable equality. Its proof needs the set to be crisp.
 +
 +\begin{code}
 +
@@ -115,7 +296,7 @@ index 0000000..256cab7
 +
 +\end{code}
 +
-+If the type Ω 𝓤 of propositions is ♭-discrete, or merely if the
++If the type Ω 𝓤 of propositions is ♭-discrete, or even just if the
 +counit ♭ (Ω 𝓤) → Ω 𝓤 has a section, then crisp excluded middle gives
 +excluded middle, because then every proposition is (equal to) a crisp
 +one.
@@ -139,7 +320,7 @@ index 0000000..256cab7
 +Null types. A type A is null with respect to a type B if the map
 +A → (B → A) that sends a to the constant function with value a is an
 +equivalence. If B is pointed by b, this amounts to every map f : B → A
-+satisfying f x ＝ f b for all x [1, Lemma 8.7].
++satisfying f x ＝ f b for all x (compare [1, Lemma 8.7]).
 +
 +\begin{code}
 +
@@ -167,7 +348,8 @@ index 0000000..256cab7
 +a crisp type is discrete if and only if it is null with respect to
 +every R j. Shulman asks the family to be crisp; we don't, because we
 +never need this, so our results apply in particular to crisp families.
-+(Shulman writes I for the index type, which we call J.)
++(Shulman writes I for the index type, which we call J. Below, as on
++the nLab, I is a generator.)
 +
 +\begin{code}
 +
@@ -206,19 +388,17 @@ index 0000000..256cab7
 +the direction that I detects discreteness. Moreover, the page defines
 +discreteness using a canonical function ♭(−) : A → ♭A, whereas the
 +canonical function goes the other way, ♭A → A (our ♭-counit). We
-+repair the definition
-+by reading it in Shulman's single-mode spatial type theory: a crisp
-+type A is ♭-discrete if and only if every function from I into A is
-+constant. We read "every function f from I into A is constant" as
-+(i : I) → f i ＝ f p, which for a pointed type I is equivalent to the
-+other usual readings, and, by null-iff-maps-are-constant, to A being
-+null with respect to I.
++repair the definition by reading it in Shulman's single-mode spatial
++type theory: a crisp type A is ♭-discrete if and only if every
++function from I into A is constant. We read "every function f from I
++into A is constant" as (i : I) → f i ＝ f p, which for a pointed type
++I is equivalent to the other usual readings, and, by
++null-iff-maps-are-constant, to A being null with respect to I.
 +
 +To distinguish the repaired definition from Shulman's Axiom C1, we
-+call it singly generated punctual cohesion. (The nLab writes I for the
-+generator itself.) In real cohesion [1], there is a single generator,
-+the type of real numbers, pointed by 0, and the axiom is Shulman's
-+Axiom R♭.
++call it singly generated punctual cohesion. In real cohesion [1],
++there is a single generator, the type of real numbers, pointed by 0,
++and the axiom is Shulman's Axiom R♭.
 +
 +\begin{code}
 +
@@ -268,19 +448,624 @@ index 0000000..256cab7
 +  p = base-point ⋆
 +
 +\end{code}
-diff --git a/source/gist/CohesiveApartness/TightApartness.lagda b/source/gist/CohesiveApartness/TightApartness.lagda
+diff --git a/source/gist/CohesiveApartness/FlatSplit.lagda b/source/gist/CohesiveApartness/FlatSplit.lagda
 new file mode 100644
-index 0000000..8a95a65
+index 00000000..310a7bbe
 --- /dev/null
-+++ b/source/gist/CohesiveApartness/TightApartness.lagda
-@@ -0,0 +1,889 @@
++++ b/source/gist/CohesiveApartness/FlatSplit.lagda
+@@ -0,0 +1,269 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
 +Zwanziger, 25 October 2026. See the AI disclosure in
 +gist.CohesiveApartness.index.
 +
-+We discuss the first two open problems listed in the section "In
-+cohesive homotopy type theory" of the nLab page [1], which read as
-+follows (24 October 2026):
++𝟚 is ♭-discrete, by crisp case analysis, and the main theorems of
++gist.CohesiveApartness.TightApartness without that hypothesis.
++
++Several results of gist.CohesiveApartness.TightApartness assume that
++𝟚 is ♭-discrete. This is a theorem of Shulman's spatial type theory
++[1, Theorems 6.19 and 6.21], the second of which rests on the crisp
++induction principles of [1, §5]. Shulman's proofs of these principles
++use the sharp modality ♯, which Agda's --cohesion did not provide
++before version 2.9.0. In Agda 2.8, crisp induction on 𝟚 is instead
++case analysis on a crisp variable of type 𝟚, which needs the flag
++--flat-split, and Agda's --safe mode doesn't allow --flat-split
++together with --without-K. So gist.CohesiveApartness.TightApartness,
++which is --safe, takes the fact as a hypothesis, and we prove it here
++in this way; gist.CohesiveApartness.CrispInduction proves it instead
++from the native ♯ of Agda 2.9.0, in --safe mode. This is the only
++module of this folder that uses --flat-split. Because --flat-split is
++infective and this module isn't --safe, gist.CohesiveApartness.index
++doesn't import it, and it has to be checked separately.
++
++We then restate the main theorems of
++gist.CohesiveApartness.TightApartness without the hypothesis, in the
++order in which they appear there. Each keeps the name of the original,
++followed by ′ (the prime U+2032), and has the same parameters and
++universe restrictions; see the paragraph on scope in
++gist.CohesiveApartness.TightApartness.
++
++ * Over crisp excluded middle, the first statement implies double
++   negation elimination, and so is equivalent to excluded middle.
++
++ * If some type with two distinct points has only constant maps to 𝟚,
++   then, over crisp excluded middle, the first statement fails.
++
++ * Over crisp excluded middle, under Shulman's Axiom C1 and assuming
++   propositional extensionality, each statement is equivalent to
++   every generator being 0-connected. Under Shulman's Axiom C2, both
++   statements fail, the first over crisp excluded middle.
++
++ * Over crisp excluded middle, under singly generated punctual
++   cohesion for a pointed type (I , p), each statement is equivalent
++   to I being 0-connected, assuming propositional extensionality, and,
++   if I is a set, to every point of I being equal to p. Both
++   statements fail if I has a point other than p, the first over
++   crisp excluded middle.
++
++The results about the second statement that are not listed here, such
++as its equivalence with excluded middle, don't use the hypothesis.
++
++[1] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
++    homotopy type theory. Mathematical Structures in Computer
++    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
++    Numbering as in version 3 of the arXiv preprint.
++
++\begin{code}
++
++{-# OPTIONS --without-K --cohesion --flat-split #-}
++
++module gist.CohesiveApartness.FlatSplit where
++
++open import MLTT.Spartan
++open import UF.ClassicalLogic
++open import UF.Equiv
++open import UF.FunExt
++open import UF.PropTrunc
++open import UF.Sets
++open import UF.Subsingletons
++open import gist.CohesiveApartness.Flat
++
++\end{code}
++
++The section s of the counit is defined by case analysis on an
++arbitrary element of 𝟚. That s is a retraction of the counit is
++proved by case analysis on a crisp element of 𝟚, and this is where
++--flat-split is used.
++
++\begin{code}
++
++𝟚-is-♭-discrete : is-♭-discrete 𝟚
++𝟚-is-♭-discrete = qinvs-are-equivs ♭-counit (s , η , ε)
++ where
++  s : 𝟚 → ♭ 𝟚
++  s ₀ = ₀ ^♭
++  s ₁ = ₁ ^♭
++
++  crisp-η : (@♭ b : 𝟚) → s b ＝ b ^♭
++  crisp-η ₀ = refl
++  crisp-η ₁ = refl
++
++  η : s ∘ ♭-counit ∼ id
++  η (b ^♭) = crisp-η b
++
++  ε : ♭-counit ∘ s ∼ id
++  ε ₀ = refl
++  ε ₁ = refl
++
++\end{code}
++
++The main theorems of gist.CohesiveApartness.TightApartness without the
++hypothesis that 𝟚 is ♭-discrete. First, over crisp excluded middle,
++the first statement implies double negation elimination, and so is
++equivalent to excluded middle.
++
++\begin{code}
++
++module _ (@♭ fe : Fun-Ext)
++         (pt : propositional-truncations-exist)
++       where
++
++ open import gist.CohesiveApartness.TightApartness fe pt
++ open PropositionalTruncation pt
++
++ tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE′
++  : {@♭ 𝓥 : Universe}
++  → Crisp-EM 𝓥
++  → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥
++  → DNE 𝓥
++ tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE′ cem =
++  tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE cem
++   𝟚-is-♭-discrete
++
++ tight-apartnesses-on-♭-discrete-types-are-crisp-iff-EM′
++  : {@♭ 𝓥 : Universe}
++  → Crisp-EM 𝓥
++  → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥 ↔ EM 𝓥
++ tight-apartnesses-on-♭-discrete-types-are-crisp-iff-EM′ cem =
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-EM cem 𝟚-is-♭-discrete
++
++\end{code}
++
++The refutation of the first statement under minimal hypotheses: a type
++with two distinct points and only constant maps to 𝟚, and crisp
++excluded middle.
++
++\begin{code}
++
++ two-distinct-points-refute-that-tight-apartnesses-are-crisp′
++  : {@♭ 𝓦 : Universe}
++    (I : 𝓦 ̇ )
++  → ((f : I → 𝟚) (x y : I) → f x ＝ f y)
++  → (q₀ q₁ : I)
++  → q₀ ≠ q₁
++  → Crisp-EM 𝓦
++  → ¬ Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓦
++ two-distinct-points-refute-that-tight-apartnesses-are-crisp′
++  I maps-to-𝟚-are-constant q₀ q₁ q₀-is-not-q₁ cem =
++   two-distinct-points-refute-that-tight-apartnesses-are-crisp
++    I maps-to-𝟚-are-constant q₀ q₁ q₀-is-not-q₁ cem 𝟚-is-♭-discrete
++
++\end{code}
++
++Shulman's Axiom C1: each statement is equivalent to every generator
++being 0-connected. And both statements fail under Shulman's Axiom C2.
++
++\begin{code}
++
++ module _ {@♭ 𝓦 : Universe}
++          {𝓥 : Universe}
++          {J : 𝓥 ̇ }
++          (R : J → 𝓦 ̇ )
++          (c1 : Axiom-C1 R)
++        where
++
++  open Axiom-C1 c1
++
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-generators-are-connected′
++   : propext 𝓦
++   → Crisp-EM 𝓦
++   → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓦
++   ↔ ((j : J) (x : R j) → ∥ x ＝ base-point j ∥)
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-generators-are-connected′ =
++   tight-apartnesses-on-♭-discrete-types-are-crisp-iff-generators-are-connected
++    R c1 𝟚-is-♭-discrete
++
++  induced-apartnesses-on-♭-are-decidable-iff-generators-are-connected′
++   : propext 𝓦
++   → Crisp-EM 𝓦
++   → Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓦
++   ↔ ((j : J) (x : R j) → ∥ x ＝ base-point j ∥)
++  induced-apartnesses-on-♭-are-decidable-iff-generators-are-connected′ =
++   induced-apartnesses-on-♭-are-decidable-iff-generators-are-connected
++    R c1 𝟚-is-♭-discrete
++
++  module _ (j₀ : J)
++           (r₀ r₁ : R j₀)
++           (r₀-is-not-r₁ : r₀ ≠ r₁)
++         where
++
++   Axiom-C2-refutes-that-tight-apartnesses-are-crisp′
++    : Crisp-EM 𝓦
++    → ¬ Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓦
++   Axiom-C2-refutes-that-tight-apartnesses-are-crisp′ =
++    Axiom-C2-refutes-that-tight-apartnesses-are-crisp
++     R c1 𝟚-is-♭-discrete j₀ r₀ r₁ r₀-is-not-r₁
++
++   Axiom-C2-refutes-that-induced-apartnesses-are-decidable′
++    : ¬ Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓦
++   Axiom-C2-refutes-that-induced-apartnesses-are-decidable′ =
++    Axiom-C2-refutes-that-induced-apartnesses-are-decidable
++     R c1 𝟚-is-♭-discrete j₀ r₀ r₁ r₀-is-not-r₁
++
++\end{code}
++
++Singly generated punctual cohesion for a pointed type (I , p): each
++statement is equivalent to I being 0-connected, or, if I is a set, to
++every point of I being equal to p. And both statements fail if I has
++a point other than p.
++
++\begin{code}
++
++ module _ {@♭ 𝓥 : Universe}
++          (I : 𝓥 ̇ )
++          (p : I)
++          (sgpc : Singly-Generated-Punctual-Cohesion I p)
++        where
++
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-I-is-connected′
++   : propext 𝓥
++   → Crisp-EM 𝓥
++   → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥
++   ↔ ((x : I) → ∥ x ＝ p ∥)
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-I-is-connected′ =
++   tight-apartnesses-on-♭-discrete-types-are-crisp-iff-I-is-connected
++    I p sgpc 𝟚-is-♭-discrete
++
++  induced-apartnesses-on-♭-are-decidable-iff-I-is-connected′
++   : propext 𝓥
++   → Crisp-EM 𝓥
++   → Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓥 ↔ ((x : I) → ∥ x ＝ p ∥)
++  induced-apartnesses-on-♭-are-decidable-iff-I-is-connected′ =
++   induced-apartnesses-on-♭-are-decidable-iff-I-is-connected
++    I p sgpc 𝟚-is-♭-discrete
++
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-every-point-of-I-is-p′
++   : is-set I
++   → Crisp-EM 𝓥
++   → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥 ↔ ((i : I) → i ＝ p)
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-every-point-of-I-is-p′ =
++   tight-apartnesses-on-♭-discrete-types-are-crisp-iff-every-point-of-I-is-p
++    I p sgpc 𝟚-is-♭-discrete
++
++  induced-apartnesses-on-♭-are-decidable-iff-every-point-of-I-is-p′
++   : is-set I
++   → Crisp-EM 𝓥
++   → Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓥 ↔ ((i : I) → i ＝ p)
++  induced-apartnesses-on-♭-are-decidable-iff-every-point-of-I-is-p′ =
++   induced-apartnesses-on-♭-are-decidable-iff-every-point-of-I-is-p
++    I p sgpc 𝟚-is-♭-discrete
++
++  module _ (q : I)
++           (q-is-not-p : q ≠ p)
++         where
++
++   not-all-tight-apartnesses-on-♭-discrete-types-are-crisp′
++    : Crisp-EM 𝓥
++    → ¬ Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥
++   not-all-tight-apartnesses-on-♭-discrete-types-are-crisp′ =
++    not-all-tight-apartnesses-on-♭-discrete-types-are-crisp
++     I p sgpc 𝟚-is-♭-discrete q q-is-not-p
++
++   not-all-induced-apartnesses-on-♭-are-decidable′
++    : ¬ Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓥
++   not-all-induced-apartnesses-on-♭-are-decidable′ =
++    not-all-induced-apartnesses-on-♭-are-decidable
++     I p sgpc 𝟚-is-♭-discrete q q-is-not-p
++
++\end{code}
+diff --git a/source/gist/CohesiveApartness/Sharp.lagda b/source/gist/CohesiveApartness/Sharp.lagda
+new file mode 100644
+index 00000000..56cf8983
+--- /dev/null
++++ b/source/gist/CohesiveApartness/Sharp.lagda
+@@ -0,0 +1,84 @@
++Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
++Zwanziger, 11 November 2026. See the AI disclosure in
++gist.CohesiveApartness.index.
++
++The sharp modality ♯, natively.
++
++Agda 2.9.0 adds the modality @♯ to --cohesion, as the right adjoint of
++@♭, and allows it on the fields of records [1]. The type ♯ A is then
++a record with one field of modality ♯, as in the Agda documentation
++[1]. It obeys Shulman's rules for ♯ [2, §3]:
++
++ * in the type ♯ A, every variable occurring in A counts as crisp;
++
++ * an element of ♯ A is defined by copattern matching, after which
++   every variable in the context counts as crisp;
++
++ * the field can be projected from a crisp element of ♯ A.
++
++From these rules we derive the unit of ♯, recursion into types of
++the form ♯ B, crisp induction (to construct an element of ♯ (C x) for
++an arbitrary x of a crisp type, it suffices to construct C x for
++crisp x), and elimination on crisp elements. Everything here is
++--safe.
++
++Agda 2.8 has no ♯, and so gist.CohesiveApartness.FlatSplit proves the
++consequence of crisp induction that this folder needs, that 𝟚 is
++♭-discrete, with --flat-split instead.
++gist.CohesiveApartness.CrispInduction derives it from the ♯ of this
++module, in --safe mode.
++
++The field is called ε♯ rather than ε, so that opening this module
++does not take the name ε, which TypeTopology uses for other
++purposes.
++
++[1] The Agda documentation, Language, Flat Modality, for Agda 2.9.0.
++    https://agda.readthedocs.io/en/latest/language/flat.html
++
++[2] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
++    homotopy type theory. Mathematical Structures in Computer
++    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
++    Numbering as in version 3 of the arXiv preprint.
++
++\begin{code}
++
++{-# OPTIONS --safe --without-K --cohesion #-}
++
++module gist.CohesiveApartness.Sharp where
++
++open import MLTT.Spartan
++
++record ♯ {𝓤 : Universe} (@♯ A : 𝓤 ̇ ) : 𝓤 ̇ where
++ constructor sharp
++ field
++  @♯ ε♯ : A
++
++open ♯ public
++
++\end{code}
++
++The unit, elimination on crisp elements, recursion, crisp induction
++and the action on maps.
++
++\begin{code}
++
++unit-sharp : {𝓤 : Universe} {A : 𝓤 ̇ } → A → ♯ A
++unit-sharp a .ε♯ = a
++
++crisp-elim-sharp : {@♭ 𝓤 : Universe} {@♭ A : 𝓤 ̇ } (@♭ w : ♯ A) → A
++crisp-elim-sharp w = w .ε♯
++
++rec-sharp : {𝓤 𝓥 : Universe} {A : 𝓤 ̇ } {B : 𝓥 ̇ }
++          → (A → ♯ B) → ♯ A → ♯ B
++rec-sharp f a .ε♯ = f (a .ε♯) .ε♯
++
++crisp-ind-sharp : {@♭ 𝓤 : Universe} {𝓥 : Universe} {@♭ A : 𝓤 ̇ }
++                  (C : A → 𝓥 ̇ )
++                → ((@♭ x : A) → C x)
++                → (x : A) → ♯ (C x)
++crisp-ind-sharp C f x .ε♯ = f x
++
++♯-map : {𝓤 𝓥 : Universe} {A : 𝓤 ̇ } {B : 𝓥 ̇ } → (A → B) → ♯ A → ♯ B
++♯-map f a .ε♯ = f (a .ε♯)
++
++\end{code}
+diff --git a/source/gist/CohesiveApartness/Theorems.lagda b/source/gist/CohesiveApartness/Theorems.lagda
+new file mode 100644
+index 00000000..af838252
+--- /dev/null
++++ b/source/gist/CohesiveApartness/Theorems.lagda
+@@ -0,0 +1,234 @@
++Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
++Zwanziger, 11 November 2026, from gist.CohesiveApartness.FlatSplit of
++25 October 2026. See the AI disclosure in gist.CohesiveApartness.index.
++
++The main theorems of gist.CohesiveApartness.TightApartness without the
++hypothesis that 𝟚 is ♭-discrete, in --safe mode.
++
++Several results of gist.CohesiveApartness.TightApartness assume that
++𝟚 is ♭-discrete, a theorem of Shulman's spatial type theory [1,
++Theorems 6.19 and 6.21] whose proof uses crisp induction.
++gist.CohesiveApartness.FlatSplit proves it with Agda's --flat-split,
++which is not allowed together with --safe and --without-K, and
++restates the theorems without the hypothesis. Here the fact comes from
++gist.CohesiveApartness.CrispInduction, which derives it from the
++native ♯ of Agda 2.9.0, as Shulman derives crisp induction from ♯
++[1, §5]. So this module is --safe and gist.CohesiveApartness.index
++imports it.
++
++The statements are those of gist.CohesiveApartness.FlatSplit, with the
++same names (the name of the original followed by ′, the prime U+2032)
++and the same parameters and universe restrictions (see the paragraph
++on scope in gist.CohesiveApartness.TightApartness), in the order in
++which they appear in gist.CohesiveApartness.TightApartness:
++
++ * Over crisp excluded middle, the first statement implies double
++   negation elimination, and so is equivalent to excluded middle.
++
++ * If some type with two distinct points has only constant maps to 𝟚,
++   then, over crisp excluded middle, the first statement fails.
++
++ * Over crisp excluded middle, under Shulman's Axiom C1 and assuming
++   propositional extensionality, each statement is equivalent to
++   every generator being 0-connected. Under Shulman's Axiom C2, both
++   statements fail, the first over crisp excluded middle.
++
++ * Over crisp excluded middle, under singly generated punctual
++   cohesion for a pointed type (I , p), each statement is equivalent
++   to I being 0-connected, assuming propositional extensionality, and,
++   if I is a set, to every point of I being equal to p. Both
++   statements fail if I has a point other than p, the first over
++   crisp excluded middle.
++
++[1] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
++    homotopy type theory. Mathematical Structures in Computer
++    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
++    Numbering as in version 3 of the arXiv preprint.
++
++\begin{code}
++
++{-# OPTIONS --safe --without-K --cohesion #-}
++
++module gist.CohesiveApartness.Theorems where
++
++open import MLTT.Spartan
++open import UF.ClassicalLogic
++open import UF.Equiv
++open import UF.FunExt
++open import UF.PropTrunc
++open import UF.Sets
++open import UF.Subsingletons
++open import gist.CohesiveApartness.Flat
++open import gist.CohesiveApartness.CrispInduction using (𝟚-is-♭-discrete)
++
++\end{code}
++
++The main theorems of gist.CohesiveApartness.TightApartness without the
++hypothesis that 𝟚 is ♭-discrete. First, over crisp excluded middle,
++the first statement implies double negation elimination, and so is
++equivalent to excluded middle.
++
++\begin{code}
++
++module _ (@♭ fe : Fun-Ext)
++         (pt : propositional-truncations-exist)
++       where
++
++ open import gist.CohesiveApartness.TightApartness fe pt
++ open PropositionalTruncation pt
++
++ tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE′
++  : {@♭ 𝓥 : Universe}
++  → Crisp-EM 𝓥
++  → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥
++  → DNE 𝓥
++ tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE′ cem =
++  tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE cem
++   𝟚-is-♭-discrete
++
++ tight-apartnesses-on-♭-discrete-types-are-crisp-iff-EM′
++  : {@♭ 𝓥 : Universe}
++  → Crisp-EM 𝓥
++  → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥 ↔ EM 𝓥
++ tight-apartnesses-on-♭-discrete-types-are-crisp-iff-EM′ cem =
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-EM cem 𝟚-is-♭-discrete
++
++\end{code}
++
++The refutation of the first statement under minimal hypotheses: a type
++with two distinct points and only constant maps to 𝟚, and crisp
++excluded middle.
++
++\begin{code}
++
++ two-distinct-points-refute-that-tight-apartnesses-are-crisp′
++  : {@♭ 𝓦 : Universe}
++    (I : 𝓦 ̇ )
++  → ((f : I → 𝟚) (x y : I) → f x ＝ f y)
++  → (q₀ q₁ : I)
++  → q₀ ≠ q₁
++  → Crisp-EM 𝓦
++  → ¬ Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓦
++ two-distinct-points-refute-that-tight-apartnesses-are-crisp′
++  I maps-to-𝟚-are-constant q₀ q₁ q₀-is-not-q₁ cem =
++   two-distinct-points-refute-that-tight-apartnesses-are-crisp
++    I maps-to-𝟚-are-constant q₀ q₁ q₀-is-not-q₁ cem 𝟚-is-♭-discrete
++
++\end{code}
++
++Shulman's Axiom C1: each statement is equivalent to every generator
++being 0-connected. And both statements fail under Shulman's Axiom C2.
++
++\begin{code}
++
++ module _ {@♭ 𝓦 : Universe}
++          {𝓥 : Universe}
++          {J : 𝓥 ̇ }
++          (R : J → 𝓦 ̇ )
++          (c1 : Axiom-C1 R)
++        where
++
++  open Axiom-C1 c1
++
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-generators-are-connected′
++   : propext 𝓦
++   → Crisp-EM 𝓦
++   → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓦
++   ↔ ((j : J) (x : R j) → ∥ x ＝ base-point j ∥)
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-generators-are-connected′ =
++   tight-apartnesses-on-♭-discrete-types-are-crisp-iff-generators-are-connected
++    R c1 𝟚-is-♭-discrete
++
++  induced-apartnesses-on-♭-are-decidable-iff-generators-are-connected′
++   : propext 𝓦
++   → Crisp-EM 𝓦
++   → Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓦
++   ↔ ((j : J) (x : R j) → ∥ x ＝ base-point j ∥)
++  induced-apartnesses-on-♭-are-decidable-iff-generators-are-connected′ =
++   induced-apartnesses-on-♭-are-decidable-iff-generators-are-connected
++    R c1 𝟚-is-♭-discrete
++
++  module _ (j₀ : J)
++           (r₀ r₁ : R j₀)
++           (r₀-is-not-r₁ : r₀ ≠ r₁)
++         where
++
++   Axiom-C2-refutes-that-tight-apartnesses-are-crisp′
++    : Crisp-EM 𝓦
++    → ¬ Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓦
++   Axiom-C2-refutes-that-tight-apartnesses-are-crisp′ =
++    Axiom-C2-refutes-that-tight-apartnesses-are-crisp
++     R c1 𝟚-is-♭-discrete j₀ r₀ r₁ r₀-is-not-r₁
++
++   Axiom-C2-refutes-that-induced-apartnesses-are-decidable′
++    : ¬ Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓦
++   Axiom-C2-refutes-that-induced-apartnesses-are-decidable′ =
++    Axiom-C2-refutes-that-induced-apartnesses-are-decidable
++     R c1 𝟚-is-♭-discrete j₀ r₀ r₁ r₀-is-not-r₁
++
++\end{code}
++
++Singly generated punctual cohesion for a pointed type (I , p): each
++statement is equivalent to I being 0-connected, or, if I is a set, to
++every point of I being equal to p. And both statements fail if I has
++a point other than p.
++
++\begin{code}
++
++ module _ {@♭ 𝓥 : Universe}
++          (I : 𝓥 ̇ )
++          (p : I)
++          (sgpc : Singly-Generated-Punctual-Cohesion I p)
++        where
++
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-I-is-connected′
++   : propext 𝓥
++   → Crisp-EM 𝓥
++   → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥
++   ↔ ((x : I) → ∥ x ＝ p ∥)
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-I-is-connected′ =
++   tight-apartnesses-on-♭-discrete-types-are-crisp-iff-I-is-connected
++    I p sgpc 𝟚-is-♭-discrete
++
++  induced-apartnesses-on-♭-are-decidable-iff-I-is-connected′
++   : propext 𝓥
++   → Crisp-EM 𝓥
++   → Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓥 ↔ ((x : I) → ∥ x ＝ p ∥)
++  induced-apartnesses-on-♭-are-decidable-iff-I-is-connected′ =
++   induced-apartnesses-on-♭-are-decidable-iff-I-is-connected
++    I p sgpc 𝟚-is-♭-discrete
++
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-every-point-of-I-is-p′
++   : is-set I
++   → Crisp-EM 𝓥
++   → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥 ↔ ((i : I) → i ＝ p)
++  tight-apartnesses-on-♭-discrete-types-are-crisp-iff-every-point-of-I-is-p′ =
++   tight-apartnesses-on-♭-discrete-types-are-crisp-iff-every-point-of-I-is-p
++    I p sgpc 𝟚-is-♭-discrete
++
++  induced-apartnesses-on-♭-are-decidable-iff-every-point-of-I-is-p′
++   : is-set I
++   → Crisp-EM 𝓥
++   → Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓥 ↔ ((i : I) → i ＝ p)
++  induced-apartnesses-on-♭-are-decidable-iff-every-point-of-I-is-p′ =
++   induced-apartnesses-on-♭-are-decidable-iff-every-point-of-I-is-p
++    I p sgpc 𝟚-is-♭-discrete
++
++  module _ (q : I)
++           (q-is-not-p : q ≠ p)
++         where
++
++   not-all-tight-apartnesses-on-♭-discrete-types-are-crisp′
++    : Crisp-EM 𝓥
++    → ¬ Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥
++   not-all-tight-apartnesses-on-♭-discrete-types-are-crisp′ =
++    not-all-tight-apartnesses-on-♭-discrete-types-are-crisp
++     I p sgpc 𝟚-is-♭-discrete q q-is-not-p
++
++   not-all-induced-apartnesses-on-♭-are-decidable′
++    : ¬ Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓥
++   not-all-induced-apartnesses-on-♭-are-decidable′ =
++    not-all-induced-apartnesses-on-♭-are-decidable
++     I p sgpc 𝟚-is-♭-discrete q q-is-not-p
++
++\end{code}
+diff --git a/source/gist/CohesiveApartness/TightApartness.lagda b/source/gist/CohesiveApartness/TightApartness.lagda
+new file mode 100644
+index 00000000..5902436f
+--- /dev/null
++++ b/source/gist/CohesiveApartness/TightApartness.lagda
+@@ -0,0 +1,870 @@
++Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
++Zwanziger, 25 October 2026; three proofs made instances of one lemma,
++11 November 2026. See the AI disclosure in gist.CohesiveApartness.index.
++
++We discuss two problems that were listed as open in the section "In
++cohesive homotopy type theory" of the nLab page [1]. On 24 October
++2026 they read as follows:
 +
 + (1) Suppose a discrete cohesive type A comes with a tight apartness
 +     relation. Then, assuming crisp excluded middle and axiom C1, is
@@ -300,17 +1085,20 @@ index 0000000..8a95a65
 +Shulman's paper [2], where Axioms C0, C1 and C2 come from, as the
 +authority on Axiom C1. There, the discrete types are characterized by
 +a family of pointed generators, and the nLab definition is the case of
-+a single generator (see gist.CohesiveApartness.Flat). We give our main
-+results for both definitions.
++a single generator. We give our main results for both definitions.
 +
 +How we read the problems.
 +
-+ * We formulate both principles for crisp types A, which is the
++ * We formulate both statements for crisp types A, which is the
 +   setting in which spatial type theory provides ♭A and the
-+   ♭-discreteness of A. The tight apartness relation, on the other
-+   hand, is arbitrary: it is an ordinary, not necessarily crisp,
-+   variable. Nothing in the problems says that it is crisp, and if it
-+   were, problem (1) would be trivial.
++   ♭-discreteness of A. In (1), we also take the proof that A is
++   ♭-discrete to be crisp. Under Shulman's Axiom C1 this is no
++   restriction [2, Lemma 8.10], and our results hold for either
++   reading anyway, since excluded middle implies the stronger one.
++   The tight apartness relation, on the other hand, is arbitrary: it
++   is an ordinary, not necessarily crisp, variable. Nothing in the
++   problems says that it is crisp, and if it were, problem (1) would
++   be trivial.
 +
 + * A relation _♯_ on a crisp type X is crisp if it is pointwise
 +   logically equivalent to ♭-counit r for some crisp relation r, that
@@ -329,24 +1117,26 @@ index 0000000..8a95a65
 +
 +defined below. Here is what we show.
 +
-+ (a) Excluded middle implies both statements. This uses the result
-+     EM-gives-tight-apartness-is-≠ of Apartness.Properties.
++ (a) Excluded middle implies both statements. For the first, this uses
++     the result EM-gives-tight-apartness-is-≠ of Apartness.Properties.
 +
 + (b) For 𝓤 = 𝓤₀, each statement implies double negation elimination
 +     for propositions in 𝓥. For the first we assume crisp excluded
-+     middle and that the booleans 𝟚 are ♭-discrete; the second needs no
++     middle and that the booleans 𝟚 are ♭-discrete (a theorem of [2],
++     taken as a hypothesis here; see below); the second needs no
 +     assumption. This uses the tight apartness on 𝟚 with ₀ apart from
 +     ₁ precisely when a given ¬¬-dense proposition holds. The
-+     construction is due to Andrew Swan: following his idea, Tom de
-+     Jong showed that if ℕ has at most one tight apartness then double
-+     negation elimination holds, and that the argument works for any
-+     discrete type with two distinct points [4]. It is formalized in
-+     Apartness.Properties.
++     construction is due to Tom de Jong, following a generalization of
++     an idea of Andrew Swan [4]. De Jong used it to show that if a
++     discrete type with two distinct points, such as ℕ, has at most one
++     tight apartness, then double negation elimination holds. This is
++     formalized in Apartness.Properties.
 +
-+     A second proof of the first half of (b) applies directly the
-+     theorem of Apartness.Properties that a discrete type with two
-+     distinct points and at most one tight apartness relation gives
-+     double negation elimination.
++     A second proof of the first half of (b), for 𝓥 = 𝓤₀ and assuming
++     propositional extensionality, applies directly the theorem of
++     Apartness.Properties that a discrete type with two distinct points
++     and at most one tight apartness relation gives double negation
++     elimination.
 +
 +     So, over crisp excluded middle, each statement is equivalent to
 +     excluded middle (in the cohesive mode).
@@ -373,7 +1163,7 @@ index 0000000..8a95a65
 +     p = 0 and q = 1. More generally, both statements fail as soon as
 +     some type with two distinct points has only constant maps to 𝟚
 +     (for the first statement assuming crisp excluded middle and that
-+     𝟚 is ♭-discrete), which needs no form of axiom C1.
++     𝟚 is ♭-discrete). This needs no form of axiom C1.
 +
 +So, for either definition of axiom C1, the answer to both problems is
 +negative in the sense that crisp excluded middle and axiom C1 don't
@@ -385,9 +1175,12 @@ index 0000000..8a95a65
 +model-theoretic claims in this paragraph are not formalized here.
 +
 +The fact that 𝟚 = 𝟙 + 𝟙 is ♭-discrete follows from [2, Theorems 6.19
-+and 6.21], which rest on the crisp induction principles of [2, §5].
-+In Agda, crisp induction on 𝟚 requires --flat-split, which is not
-+available with --safe and --without-K. We therefore take it as a
++and 6.21], the second of which rests on the crisp induction principles
++of [2, §5]. In Agda, crisp induction on 𝟚 requires --flat-split, which
++is not available with --safe and --without-K. We therefore take the
++♭-discreteness of 𝟚 as a hypothesis here. The module
++gist.CohesiveApartness.FlatSplit, which uses --flat-split and is not
++--safe, proves it and restates the main theorems without this
 +hypothesis.
 +
 +[1] nLab. Open problems in homotopy type theory.
@@ -395,7 +1188,8 @@ index 0000000..8a95a65
 +
 +[2] Michael Shulman. Brouwer's fixed-point theorem in real-cohesive
 +    homotopy type theory. Mathematical Structures in Computer
-+    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584
++    Science 28(6), 856–941, 2018. https://arxiv.org/abs/1509.07584v3
++    Numbering as in version 3 of the arXiv preprint.
 +
 +[3] nLab. Axiom of punctual cohesion (axiom C1).
 +    https://ncatlab.org/nlab/show/axiom+of+punctual+cohesion
@@ -404,7 +1198,17 @@ index 0000000..8a95a65
 +    (tight) apartness relations in particular. Mathstodon, February
 +    2025. https://mathstodon.xyz/@de_Jong_Tom/113930642479158387
 +
-+Function extensionality is assumed crisply, as it is a global axiom.
++Scope. All results of this module are parameterized by function
++extensionality, assumed crisply as it is a global axiom, and by
++propositional truncations. The implications (a) hold for carriers and
++apartness values in arbitrary universes 𝓤 and 𝓥. The converse
++implications, the equivalences and the refutations of (b)–(e) are
++formalized for carriers in 𝓤₀ and apartness values in an arbitrary
++universe 𝓥, and excluded middle, crisp excluded middle and
++propositional extensionality are then for propositions in 𝓥. In
++(c)–(e), 𝓥 is the universe of the generators, and in (e) also that of
++the type with two distinct points. The second proof in (b) takes
++𝓥 = 𝓤₀.
 +
 +\begin{code}
 +
@@ -422,6 +1226,7 @@ index 0000000..8a95a65
 +open import Apartness.Definition
 +open import Apartness.Properties pt
 +open import MLTT.Two-Properties
++open import NotionsOfDecidability.DecidableClassifier using (boolean-value')
 +open import UF.Base
 +open import UF.ClassicalLogic
 +open import UF.DiscreteAndSeparated
@@ -470,8 +1275,9 @@ index 0000000..8a95a65
 +The construction from Apartness.Properties. On a discrete type X (in
 +the sense of decidable equality), given a proposition P, the relation
 +x ♯ y := P × (x ≠ y) is an apartness, and it is tight if ¬¬ P holds.
-+Apart points exist only if P holds. We name it after Andrew Swan,
-+whose idea it is [4].
++Apart points exist only if P holds. The construction is due to Tom de
++Jong, following a generalization of an idea of Andrew Swan [4]; we
++name it after Swan's idea.
 +
 +\begin{code}
 +
@@ -588,13 +1394,13 @@ index 0000000..8a95a65
 + At-Most-One-Tight-Apartness-on-discrete-type-with-two-distinct-points-gives-DNE
 +  fe 𝟚 ((₀ , ₁) , zero-is-not-one) 𝟚-is-discrete
 +
-+tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE'
++tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE-via-uniqueness
 + : propext 𝓤₀
 + → Crisp-EM 𝓤₀
 + → @♭ is-♭-discrete 𝟚
 + → Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓤₀
 + → DNE 𝓤₀
-+tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE'
++tight-apartnesses-on-♭-discrete-types-are-crisp-gives-DNE-via-uniqueness
 + pe cem 𝟚-is-♭-discrete φ = at-most-one-tight-apartness-on-𝟚-gives-DNE γ
 +  where
 +   I : ((_♯_ , _) : Tight-Apartness 𝟚 𝓤₀) (x y : 𝟚) → x ♯ y ↔ x ≠ y
@@ -695,8 +1501,9 @@ index 0000000..8a95a65
 +
 +\end{code}
 +
-+Summing up: over crisp excluded middle, each statement is equivalent to
-+excluded middle.
++Summing up: the second statement is equivalent to excluded middle, and
++so is the first, over crisp excluded middle and assuming that 𝟚 is
++♭-discrete.
 +
 +\begin{code}
 +
@@ -721,15 +1528,36 @@ index 0000000..8a95a65
 +
 +\end{code}
 +
-+Refutations under minimal hypotheses.
-+Suppose that a type I has two distinct points, and that every map
-+from I to 𝟚 is constant. Then excluded middle fails, because the
-+characteristic function of the first point, which excluded middle
-+would provide, separates the two points. Hence both statements fail.
-+For the first we assume crisp excluded middle and that 𝟚 is
-+♭-discrete; the second needs neither. Neither axiom C1 nor that I is
-+a set is needed. The refutations from Shulman's Axiom C2 and from
-+singly generated punctual cohesion below are instances.
++The argument used three times below: a decidable predicate P on X that
++holds at x₀ holds at every x such that every map X → 𝟚 agrees at x and
++x₀, because the characteristic function of P is such a map. We take
++the characteristic function from TypeTopology's boolean-value'.
++
++\begin{code}
++
++decidable-predicates-spread : {𝓤 𝓥 : Universe} {X : 𝓤 ̇ } (P : X → 𝓥 ̇ )
++                            → ((x : X) → is-decidable (P x))
++                            → (x₀ x : X)
++                            → ((f : X → 𝟚) → f x ＝ f x₀)
++                            → P x₀ → P x
++decidable-predicates-spread P d x₀ x c p₀ =
++ lr-implication (pr₂ (pr₂ (boolean-value' (d x))))
++  (c χ ∙ rl-implication (pr₂ (pr₂ (boolean-value' (d x₀)))) p₀)
++ where
++  χ : _ → 𝟚
++  χ y = pr₁ (boolean-value' (d y))
++
++\end{code}
++
++Refutations under minimal hypotheses. Suppose that a type I has two
++distinct points, and that every map from I to 𝟚 is constant. Then
++excluded middle fails, because the characteristic function of the
++first point, which excluded middle would provide, separates the two
++points. Hence both statements fail. For the first we assume crisp
++excluded middle and that 𝟚 is ♭-discrete; the second needs neither.
++We need neither axiom C1 nor the assumption that I is a set. The
++refutations from Shulman's Axiom C2 and from singly generated
++punctual cohesion below are instances.
 +
 +\begin{code}
 +
@@ -741,30 +1569,11 @@ index 0000000..8a95a65
 +       where
 +
 + two-distinct-points-refute-EM : ¬ EM 𝓦
-+ two-distinct-points-refute-EM em = not-merely-equal (γ (d q₁) refl)
++ two-distinct-points-refute-EM em =
++  not-merely-equal
++   (decidable-predicates-spread (λ x → ∥ x ＝ q₀ ∥) (λ x → em ∥ x ＝ q₀ ∥ ∥∥-is-prop)
++     q₀ q₁ (λ f → maps-to-𝟚-are-constant f q₁ q₀) ∣ refl ∣)
 +  where
-+   d : (x : I) → is-decidable ∥ x ＝ q₀ ∥
-+   d x = em ∥ x ＝ q₀ ∥ ∥∥-is-prop
-+
-+   δ : {A : 𝓦 ̇ } → is-decidable A → 𝟚
-+   δ (inl _) = ₁
-+   δ (inr _) = ₀
-+
-+   χ : I → 𝟚
-+   χ x = δ (d x)
-+
-+   χ-at-q₀ : χ q₀ ＝ ₁
-+   χ-at-q₀ = κ (d q₀)
-+    where
-+     κ : (e : is-decidable ∥ q₀ ＝ q₀ ∥) → δ e ＝ ₁
-+     κ (inl _) = refl
-+     κ (inr ν) = 𝟘-elim (ν ∣ refl ∣)
-+
-+   γ : (e : is-decidable ∥ q₁ ＝ q₀ ∥) → e ＝ d q₁ → ∥ q₁ ＝ q₀ ∥
-+   γ (inl t) _ = t
-+   γ (inr ν) r = 𝟘-elim (zero-is-not-one
-+                          (ap δ r ∙ maps-to-𝟚-are-constant χ q₁ q₀ ∙ χ-at-q₀))
-+
 +   not-merely-equal : ¬ ∥ q₁ ＝ q₀ ∥
 +   not-merely-equal = ∥∥-rec 𝟘-is-prop (λ e → q₀-is-not-q₁ (e ⁻¹))
 +
@@ -788,8 +1597,8 @@ index 0000000..8a95a65
 +
 +For comparison, here are the special cases in which the apartness
 +relation is crisp, where crisp excluded middle suffices. The first is
-+a crisp version of EM-gives-tight-apartness-is-≠. In the second,
-+neither tightness nor axiom C1 is needed.
++a crisp version of EM-gives-tight-apartness-is-≠. Neither uses axiom
++C1, and the second doesn't use tightness.
 +
 +\begin{code}
 +
@@ -863,33 +1672,10 @@ index 0000000..8a95a65
 +
 + EM-gives-generators-are-connected
 +  : EM 𝓦 → (j : J) (x : R j) → ∥ x ＝ base-point j ∥
-+ EM-gives-generators-are-connected em j x = γ (d x) refl
-+  where
-+   d : (y : R j) → is-decidable ∥ y ＝ base-point j ∥
-+   d y = em ∥ y ＝ base-point j ∥ ∥∥-is-prop
-+
-+   δ : {A : 𝓦 ̇ } → is-decidable A → 𝟚
-+   δ (inl _) = ₁
-+   δ (inr _) = ₀
-+
-+   χ : R j → 𝟚
-+   χ y = δ (d y)
-+
-+   χ-at-base-point : χ (base-point j) ＝ ₁
-+   χ-at-base-point = κ (d (base-point j))
-+    where
-+     κ : (e : is-decidable ∥ base-point j ＝ base-point j ∥) → δ e ＝ ₁
-+     κ (inl _) = refl
-+     κ (inr ν) = 𝟘-elim (ν ∣ refl ∣)
-+
-+   γ : (e : is-decidable ∥ x ＝ base-point j ∥)
-+     → e ＝ d x
-+     → ∥ x ＝ base-point j ∥
-+   γ (inl t) _ = t
-+   γ (inr ν) q = 𝟘-elim (zero-is-not-one
-+                          (ap δ q
-+                           ∙ maps-from-generators-to-𝟚-are-constant j χ x
-+                           ∙ χ-at-base-point))
++ EM-gives-generators-are-connected em j x =
++  decidable-predicates-spread (λ y → ∥ y ＝ base-point j ∥)
++   (λ y → em ∥ y ＝ base-point j ∥ ∥∥-is-prop) (base-point j) x
++   (λ f → maps-from-generators-to-𝟚-are-constant j f x) ∣ refl ∣
 +
 +\end{code}
 +
@@ -1053,35 +1839,15 @@ index 0000000..8a95a65
 +\begin{code}
 +
 + EM-gives-every-point-of-I-is-p : is-set I → EM 𝓥 → (i : I) → i ＝ p
-+ EM-gives-every-point-of-I-is-p I-is-set em i = γ (d i) refl
-+  where
-+   d : (j : I) → is-decidable (j ＝ p)
-+   d j = em (j ＝ p) I-is-set
-+
-+   δ : {A : 𝓥 ̇ } → is-decidable A → 𝟚
-+   δ (inl _) = ₁
-+   δ (inr _) = ₀
-+
-+   χ : I → 𝟚
-+   χ j = δ (d j)
-+
-+   χ-at-p : χ p ＝ ₁
-+   χ-at-p = κ (d p)
-+    where
-+     κ : (e : is-decidable (p ＝ p)) → δ e ＝ ₁
-+     κ (inl _) = refl
-+     κ (inr ν) = 𝟘-elim (ν refl)
-+
-+   γ : (e : is-decidable (i ＝ p)) → e ＝ d i → i ＝ p
-+   γ (inl e) _ = e
-+   γ (inr ν) r = 𝟘-elim (zero-is-not-one
-+                          (ap δ r ∙ maps-from-I-to-𝟚-are-constant χ i ∙ χ-at-p))
++ EM-gives-every-point-of-I-is-p I-is-set em i =
++  decidable-predicates-spread (λ j → j ＝ p) (λ j → em (j ＝ p) I-is-set) p i
++   (λ f → maps-from-I-to-𝟚-are-constant f i) refl
 +
 +\end{code}
 +
 +Conversely, if every point of I is equal to p, then every map I → Ω 𝓥
-+is constant, and so Ω 𝓥 is ♭-discrete by singly generated punctual
-+cohesion, and hence crisp excluded middle gives excluded middle.
++is constant, so Ω 𝓥 is ♭-discrete by singly generated punctual
++cohesion. Hence crisp excluded middle gives excluded middle.
 +
 +\begin{code}
 +
@@ -1145,8 +1911,8 @@ index 0000000..8a95a65
 +          (q-is-not-p : q ≠ p)
 +        where
 +
-+  maps-from-I-to-𝟚-are-constant' : (f : I → 𝟚) (x y : I) → f x ＝ f y
-+  maps-from-I-to-𝟚-are-constant' f x y =
++  maps-from-I-to-𝟚-are-wconstant : (f : I → 𝟚) (x y : I) → f x ＝ f y
++  maps-from-I-to-𝟚-are-wconstant f x y =
 +   maps-from-I-to-𝟚-are-constant f x ∙ maps-from-I-to-𝟚-are-constant f y ⁻¹
 +
 +  not-all-tight-apartnesses-on-♭-discrete-types-are-crisp
@@ -1154,45 +1920,59 @@ index 0000000..8a95a65
 +   → ¬ Tight-Apartnesses-On-♭-Discrete-Types-Are-Crisp 𝓤₀ 𝓥
 +  not-all-tight-apartnesses-on-♭-discrete-types-are-crisp cem =
 +   two-distinct-points-refute-that-tight-apartnesses-are-crisp
-+    I maps-from-I-to-𝟚-are-constant' q p q-is-not-p cem 𝟚-is-♭-discrete
++    I maps-from-I-to-𝟚-are-wconstant q p q-is-not-p cem 𝟚-is-♭-discrete
 +
 +  not-all-induced-apartnesses-on-♭-are-decidable
 +   : ¬ Induced-Apartnesses-On-♭-Are-Decidable 𝓤₀ 𝓥
 +  not-all-induced-apartnesses-on-♭-are-decidable =
 +   two-distinct-points-refute-that-induced-apartnesses-are-decidable
-+    I maps-from-I-to-𝟚-are-constant' q p q-is-not-p
++    I maps-from-I-to-𝟚-are-wconstant q p q-is-not-p
 +
 +\end{code}
 diff --git a/source/gist/CohesiveApartness/index.lagda b/source/gist/CohesiveApartness/index.lagda
 new file mode 100644
-index 0000000..f7253a7
+index 00000000..761edd0a
 --- /dev/null
 +++ b/source/gist/CohesiveApartness/index.lagda
-@@ -0,0 +1,60 @@
+@@ -0,0 +1,103 @@
 +Claude Opus 5.5, an AI model made by Anthropic, prompted by Colin
-+Zwanziger, 25 October 2026.
++Zwanziger, 25 October 2026; the modules for the native ♯ of Agda 2.9.0
++added, and three proofs of TightApartness made instances of one lemma,
++11 November 2026.
 +
-+AI disclosure. The Agda code, the prose and the mathematical
-+arguments in this folder are by Claude Opus 5.5, an AI model made by
-+Anthropic, prompted by Colin Zwanziger in a conversation on 24 and 25
-+October 2026. The files were type-checked with Agda 2.8.0 against
-+TypeTopology commit 52ed2eb of 24 October 2026. TypeTopology's
++AI disclosure. The results are joint work of two AI models, GPT-6
++Astra and Claude Opus 5.5, who contributed equally to the
++mathematics; the solution idea came from GPT-6 Astra, which also
++reviewed the formalization. The Agda code and the prose in this
++folder are by Claude Opus 5.5, an AI model made by Anthropic,
++prompted by Colin Zwanziger in a conversation from 24 to 27 October
++2026. The modules Sharp, CrispInduction and Theorems were added on
++11 November 2026 by Claude Opus 5.5, prompted by Colin Zwanziger in
++another conversation, when the folder moved to Agda 2.9.0; they
++follow Shulman's derivation of crisp induction from the sharp
++modality. On 11 November 2026, in that conversation, three proofs in
++TightApartness became instances of one lemma,
++decidable-predicates-spread, with no statement changed. The files
++were type-checked with Agda 2.9.0 (release candidate 3) against
++TypeTopology commit 52ed2eb of 24 October 2026. Flat, TightApartness
++and FlatSplit, which don't need the native ♯, were also checked with
++Agda 2.8.0, TightApartness again after that change. TypeTopology's
 +AI-Policy.md says that AI generated Agda code or prose will not be
 +considered. This folder is therefore offered for discussion only,
-+unless the maintainers decide otherwise.
++unless the maintainers decide otherwise. A paper presenting the
++results is in the repository
 +
-+Acknowledgement. We thank GPT-6 Astra for reviewing the
-+formalization.
++ https://github.com/zwanzigerc/cohesive-apartness
 +
-+This folder studies the first two open problems listed in the section
-+"In cohesive homotopy type theory" of the nLab page
++This folder studies two problems about tight apartness relations in
++the presence of the flat modality ♭, formerly listed as open problems
++on the nLab page
 +
 + https://ncatlab.org/nlab/show/open+problems+in+homotopy+type+theory
 +
-+which concern tight apartness relations in the presence of the flat
-+modality ♭. See gist.CohesiveApartness.TightApartness for the
-+statements of the problems, how we read them, and a summary of the
-+results.
++See gist.CohesiveApartness.TightApartness for the statements of the
++problems, how we read them, the exact scope of the formal results, and
++a summary of the results.
 +
 + * gist.CohesiveApartness.Flat defines ♭, ♭-discreteness, crisp
 +   excluded middle, Shulman's Axioms C0 and C1, and the nLab's
@@ -1201,15 +1981,41 @@ index 0000000..f7253a7
 +
 + * gist.CohesiveApartness.TightApartness formulates the two problems
 +   and shows that, over crisp excluded middle, each is equivalent to
-+   excluded middle. Under Shulman's Axiom C1, each is equivalent to
-+   every generator being 0-connected, and under singly generated
-+   punctual cohesion to the generator being 0-connected. Both
-+   statements are refuted by Shulman's Axiom C2.
++   excluded middle. Assuming also propositional extensionality, each
++   is then equivalent, under Shulman's Axiom C1, to every generator
++   being 0-connected, and under singly generated punctual cohesion to
++   the generator being 0-connected. Shulman's Axiom C2 refutes both
++   statements (the first over crisp excluded middle). Some of these
++   results assume that 𝟚 is ♭-discrete, a theorem of Shulman's type
++   theory whose proof needs crisp induction.
++
++ * gist.CohesiveApartness.Sharp defines the sharp modality ♯ natively,
++   as a record with a field of modality ♯, which Agda 2.9.0 allows,
++   with its unit, recursion, crisp induction and elimination on crisp
++   elements.
++
++ * gist.CohesiveApartness.CrispInduction derives from ♯ consequences
++   of crisp induction: that 𝟚, which this folder uses, ℕ and ♭ A are
++   ♭-discrete, and that the constructor of ♭ respects crisp
++   identifications.
++
++ * gist.CohesiveApartness.Theorems restates the main theorems of
++   gist.CohesiveApartness.TightApartness without the assumption that
++   𝟚 is ♭-discrete.
++
++ * gist.CohesiveApartness.FlatSplit proves that 𝟚 is ♭-discrete
++   instead by pattern matching on a crisp element of 𝟚, using Agda's
++   flag --flat-split, and restates the same theorems. It is the route
++   for Agda 2.8, which has no ♯, and is kept for comparison. Agda
++   doesn't allow --flat-split together with --safe and --without-K,
++   so this module is not --safe. It is therefore not imported here
++   and has to be checked separately.
 +
 +The problems were posed by the nLab contributor Anonymouse, using the
 +nLab's definition of axiom C1, so technically they refer to singly
-+generated punctual cohesion. We take Shulman's paper as the authority
-+on Axiom C1, and give the main results for both definitions.
++generated punctual cohesion. We take Shulman's paper (arXiv:1509.07584)
++as the authority on Axiom C1, and give the main results for both
++definitions.
 +
 +The modules here use Agda's flag --cohesion, which provides the flat
 +modality and crisp variables. Because --cohesion is infective, every
@@ -1225,7 +2031,10 @@ index 0000000..f7253a7
 +
 +module gist.CohesiveApartness.index where
 +
++import gist.CohesiveApartness.CrispInduction
 +import gist.CohesiveApartness.Flat
++import gist.CohesiveApartness.Sharp
++import gist.CohesiveApartness.Theorems
 +import gist.CohesiveApartness.TightApartness
 +
 +\end{code}
