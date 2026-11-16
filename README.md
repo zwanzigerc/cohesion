@@ -27,13 +27,13 @@ complementary closed restriction with Boolean base. Verified in unpublished Lean
 
 ## Our results on Shulman’s *Brouwer’s fixed-point theorem in real-cohesive homotopy type theory*
 
-**Approximate intermediate values.** Shulman’s Theorem 11.4 assumes a crisp
+**Approximate intermediate value theorem.** Shulman’s Theorem 11.4 assumes a crisp
 function and a crisp target. We remove both assumptions and obtain a rational
 witness. Under real cohesion, for any $f\colon\mathbb R\to\mathbb R$, if
 $p<q$, $f(a)<q$ and $p<f(b)$, there merely exists a rational $r$ with
 $p<f(r)<q$. [Approximate intermediate value theorem](docs/shulman.md#the-approximate-intermediate-value-theorem)
 
-**Brouwer fixed points.** We extend Shulman’s sharp and crisp fixed-point
+**Brouwer fixed point theorems.** We extend Shulman’s sharp and crisp fixed-point
 theorems for the disc (Theorem 12.4 and Corollary 12.5) to the closed unit
 ball in every crisp finite dimension, under weaker assumptions.
 Under crisp excluded middle, C1 for crisp pointed generators and
