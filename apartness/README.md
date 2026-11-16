@@ -42,9 +42,10 @@ Remark 2.6 of the paper.
 * **Each principle implies double-negation elimination.** P₁ uses crisp
   excluded middle in this direction. P₂ gives double-negation elimination
   directly. The construction is due to Tom de Jong, following a generalization
-  of an idea of Andrew Swan. On the Booleans, define x ♯ y to mean
-  P ∧ (x ≠ y). If ¬¬P holds, this is a tight apartness, and evaluating it
-  at 0 and 1 recovers P. Under crisp excluded middle, P₁ also gives
+  of an idea of Andrew Swan. On any type with decidable equality, let
+  x ♯ y mean P ∧ (x ≠ y), where P is a proposition. This defines an
+  apartness, and it is tight if ¬¬P holds. On the Booleans, 0 ♯ 1 is
+  equivalent to P. Under crisp excluded middle, P₁ also gives
   uniqueness of tight apartness on the Booleans up to pointwise equivalence.
   Remark 3.3 explains how propositional extensionality then gives a second
   proof via de Jong’s uniqueness theorem in the first universe.
@@ -52,10 +53,17 @@ Remark 2.6 of the paper.
 * **Axiom C1.** Under crisp excluded middle, propositional extensionality
   and Shulman’s C1, each principle is equivalent to every pointed generator
   being 0-connected. This means each of its points is merely equal to its
-  base point. The paper also treats the nLab’s single-generator formulation,
-  *singly generated punctual cohesion*. If its generator (I, p) is a set,
-  the criterion becomes “every point of I is equal to p” and the proof
-  needs no propositional extensionality.
+  base point. As Remark 2.2 explains, the nLab’s single-generator
+  formulation applies discreteness to a type in the crisp mode and
+  reverses the direction of the counit ♭A → A. For a pointed type
+  (I, p), the repaired axiom says that a crisp type A is ♭-discrete
+  exactly when every map I → A is constant.
+  With function extensionality, this is equivalent to Shulman’s C1 with
+  I as its sole generator. We call it *singly generated punctual cohesion*.
+  Under this axiom, crisp excluded middle and propositional extensionality,
+  each principle holds exactly when I is 0-connected. If I is a set,
+  each principle holds exactly when every point of I equals p, without
+  assuming propositional extensionality.
   [Shulman, §8.2](https://arxiv.org/abs/1509.07584v3) ·
   [nLab, axiom of punctual cohesion](https://ncatlab.org/nlab/show/axiom+of+punctual+cohesion)
 * **Refutation.** A type with two distinct points from which every map to
@@ -72,12 +80,15 @@ arbitrary crisp universe 𝓥. The relevant logical principles concern
 propositions in 𝓥. In the generator criteria, 𝓥 is the universe of
 the generators. [Formal statements](../typetopology/source/gist/CohesiveApartness/TightApartness.lagda)
 
-The paper’s independence remark has a further, semantic hypothesis. The
-classical model with ♭ the identity and a singleton generator satisfies
-both principles. The non-derivability argument assumes a model of real
-cohesion with crisp excluded middle. The Agda development proves the
-internal refutations. Remark 5.4 gives the semantic independence
-argument and records the conjectural status of the intended semantics.
+**What do crisp excluded middle and C1 decide?** They cannot refute either
+principle. In the classical model with ♭ the identity and a singleton
+generator, both axioms hold and both principles are true. Conversely, if
+the intended model of real cohesion with crisp excluded middle exists,
+neither principle follows from the two axioms. In that model C2 holds,
+so both principles fail. Agda checks the refutations from C2
+(with crisp excluded middle for P₁). The argument about models is given
+in Remark 5.4 of the paper, where the intended semantics of real cohesion
+is identified as conjectural.
 
 ## Native sharp in Agda 2.9.0
 
